@@ -5,6 +5,7 @@ import Signup from "./pages/Signup"
 import Home from "./pages/Home"
 import Meals from "./pages/Meals"
 import MealItemAdd from './pages/MealItemAdd'
+import MealItemEdit from './pages/MealItemEdit'
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
       <Route path="/" element={<Home />} />
       <Route path="/meals" element={<Meals />} />
       <Route path="/meals/add" element={<MealItemAdd />} />
+      <Route path="/meals/:id/edit" element={<MealItemEdit />}/>
     </Routes>
   )
 }

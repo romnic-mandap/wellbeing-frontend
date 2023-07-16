@@ -4,3 +4,12 @@ export function dateTimeConverter(dateObj){
     let m = dateObj.getMinutes() < 10 ? "0"+dateObj.getMinutes() : dateObj.getMinutes()
     return [dateObj.toISOString().split("T")[0], h+":"+m]
 }
+
+export function dayOfWeek(date){
+    {/* "yyyy-mm-dd" -> "Monday" */}
+    const weekday = [
+        "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+    ]
+    const d = new Date(date)
+    return weekday[d.getDay()]
+}

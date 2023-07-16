@@ -5,10 +5,13 @@ import PrivateNavbar from '../layouts/PrivateNavbar'
 import jwt_decode from "jwt-decode"
 import MealItem from '../components/MealItem'
 
+const BASE_URL = "http://localhost:8080/api/v1"
 const WELLBEINGv1_JWT = "WELLBEINGV1_JWT"
 
 export default function Meals() {
   const navigate = useNavigate()
+
+  const [errors, setErrors] = useState()
 
   const [jwt, setJwt] = useState()
   useEffect(() => {
@@ -27,12 +30,51 @@ export default function Meals() {
     }
   }, [])
 
+  const [mealObjList, setMealObjList] = useState()
+  useEffect(() => {
+    setErrors(null)
+    if(jwt === null || jwt === undefined) return
+    fetch(BASE_URL+"/meals", {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "GET"
+    }).then(res => {
+      if(res.status === 200){
+        return res.json()
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).then(data => {
+      setMealObjList(data)
+    }).catch(err => {
+      setErrors(err)
+    })
+  }, [jwt])
+
   return (
   <>
     <PrivateNavbar />
     <div>meals</div>
     <Link to="/meals/add">Add Meal Item</Link>
-    <MealItem />
+    {(errors) && (
+            <div className="alert alert-danger">
+              {errors['error(s)']?.map(e => {return <p>{e}</p>})}
+            </div>
+          )}
+    {!mealObjList ? null : (
+      <>
+      {
+        mealObjList.map(mo => {
+          return <MealItem mealObj={mo} />
+          }
+        )
+      }
+      </>
+      )
+    }
   </>
   )
 }

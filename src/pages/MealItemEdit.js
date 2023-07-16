@@ -1,16 +1,19 @@
 import React from 'react'
-import { useRef, useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import PrivateNavbar from '../layouts/PrivateNavbar'
-import "../util/helperfunctions"
+import { useState, useEffect, useRef } from "react"
+import { useNavigate, Link, useParams } from 'react-router-dom'
 import jwt_decode from "jwt-decode"
+import PrivateNavbar from '../layouts/PrivateNavbar'
 import { dateTimeConverter } from '../util/helperfunctions'
 
 const BASE_URL = "http://localhost:8080/api/v1"
 const WELLBEINGv1_JWT = "WELLBEINGV1_JWT"
 
-export default function AddMealItem() {
+export default function MealItemEdit() {
   const navigate = useNavigate()
+
+  const {id} = useParams()
+
+  const [errors, setErrors] = useState()
 
   {/* check if jwt else go to sign in */}
   const [jwt, setJwt] = useState()
@@ -30,7 +33,30 @@ export default function AddMealItem() {
     }
   }, [])
 
-  const [errors, setErrors] = useState()
+  const [mealObj, setMealObj] = useState()
+  useEffect(() => {
+    setErrors(null)
+    if(jwt === null || jwt === undefined) return
+    if(id === null || id === undefined) return
+    fetch(BASE_URL+"/meals/"+id, {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "GET"
+    }).then(res => {
+      if(res.status === 200){
+        return res.json()
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).then(data => {
+      setMealObj(data)
+    }).catch(err => {
+      setErrors(err)
+    })
+  }, [id, jwt])
 
   const [mealsize, setMealsize] = useState("medium")
 
@@ -40,12 +66,16 @@ export default function AddMealItem() {
   const mealNoteElement = useRef()
 
   useEffect(() => {
-    {/* add current date and itme to inputs */}
-    const [nowDate, nowTime] = dateTimeConverter(new Date())
-  
-    mealDateElement.current.value = nowDate
-    mealTimeElement.current.value = nowTime
-  }, [])
+    if (mealObj === null || mealObj === undefined) return
+    {/* init data */}
+
+    mealDateElement.current.value = mealObj.date
+    mealTimeElement.current.value = mealObj.time
+    setMealsize(mealObj.size)
+    mealDescElement.current.value = mealObj.meal
+    if (mealObj.note) mealNoteElement.current.value = mealObj.note
+
+  }, [mealObj])
 
   const handleSubmit = (e) => {
     setErrors(null)
@@ -56,12 +86,12 @@ export default function AddMealItem() {
     const mealDesc = mealDescElement.current.value
     const mealNote = mealNoteElement.current.value
 
-    fetch(BASE_URL+"/meals", {
+    fetch(BASE_URL+"/meals/"+id, {
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer " + jwt
       },
-      method: "POST",
+      method: "PUT",
       body: JSON.stringify({
         "date": mealDate,
         "time": mealTime,
@@ -70,10 +100,8 @@ export default function AddMealItem() {
         "note": mealNote
       })
     }).then(res => {
-      if(res.status === 201){
-        mealDescElement.current.value = ""
-        mealNoteElement.current.value = ""
-        return
+      if(res.status === 200){
+        navigate("/meals")
       }
       return res.json().then(data => {
         throw data
@@ -81,10 +109,30 @@ export default function AddMealItem() {
     }).catch(err => {
       setErrors(err)
     })
-    
+
+
   }
 
-  
+  const handleDelete = () => {
+    setErrors(null)
+
+    fetch(BASE_URL+"/meals/"+id, {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "DELETE",
+    }).then(res => {
+      if(res.status === 200){
+        navigate("/meals")
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).catch(err => {
+      setErrors(err)
+    })
+  }
 
   return (
     <>
@@ -99,7 +147,8 @@ export default function AddMealItem() {
 
         <div className="card">
           <div className="card-header">
-            <h3>Add Meal Item</h3>
+            <h3 style={{display:'inline-block'}}>Edit Meal Item</h3>
+            <button className="btn btn-primary mb-3 btn-sm" onClick={handleDelete} style={{display:'inline-block',marginLeft:"10px",marginTop:"5px"}}>Delete</button>
           </div>
           <div className="card-body">
             <form onSubmit={handleSubmit}>

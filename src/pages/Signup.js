@@ -44,7 +44,6 @@ export default function Signup() {
       })
     }).catch(err => {
       setErrors(err)
-      console.log(err)
     })
   }
 
