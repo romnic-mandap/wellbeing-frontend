@@ -13,3 +13,19 @@ export function dayOfWeek(date){
     const d = new Date(date)
     return weekday[d.getDay()]
 }
+
+export function format24h(stringTime){
+    {/* "13:27:00" -> "1:27 pm" */}
+    let parts = stringTime.split(":")
+
+    if(parts[0].substr(0,1) == "0"){
+        parts[0] = parts[0].substr(1)
+    }
+
+    if(parseInt(parts[0]) >= 0 && parseInt(parts[0]) <= 11){
+        return parts[0] + ":" + parts[1] + " am"
+    }else{
+        let n = parseInt(parts[0]) - 12
+        return n.toString() + ":" + parts[1] + " pm"
+    }
+}

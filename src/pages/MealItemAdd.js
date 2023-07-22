@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import PrivateNavbar from '../layouts/PrivateNavbar'
 import "../util/helperfunctions"
 import jwt_decode from "jwt-decode"
-import { dateTimeConverter } from '../util/helperfunctions'
+import { dateTimeConverter, format24h } from '../util/helperfunctions'
 
 const BASE_URL = "http://localhost:8080/api/v1"
 const WELLBEINGv1_JWT = "WELLBEINGV1_JWT"

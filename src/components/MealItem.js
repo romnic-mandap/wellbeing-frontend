@@ -1,6 +1,7 @@
 import React from 'react'
 import { dayOfWeek } from '../util/helperfunctions'
 import { Link } from 'react-router-dom'
+import { format24h } from '../util/helperfunctions'
 
 export default function MealItem({ mealObj }) {
   {/*
@@ -24,7 +25,7 @@ export default function MealItem({ mealObj }) {
       
       </div>
       <div className="card-body">
-      <p>{dayOfWeek(mealObj.date)}, {mealObj.date} @ {mealObj.time}</p>
+      <p>{dayOfWeek(mealObj.date)}, {mealObj.date} @ {format24h(mealObj.time)}</p>
         <p>meal: {mealObj.meal}</p>
         {(mealObj.note) && (
           <p>note: {mealObj.note}</p>
