@@ -2,9 +2,7 @@ import React from 'react'
 import { useRef, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import PublicNavbar from '../layouts/PublicNavbar'
-
-const BASE_URL = "http://3.0.48.60/api/v1"
-const WELLBEINGv1_JWT = "WELLBEINGV1_JWT"
+import { config } from '../constants/Constants'
 
 export default function Signin() {
   const navigate = useNavigate()
@@ -20,7 +18,7 @@ export default function Signin() {
     const username = usernameElement.current.value
     const password = passwordElement.current.value
 
-    fetch(BASE_URL+"/auth/signin", {
+    fetch(config.BASE_URL+"/auth/signin", {
       headers: {
         "content-type": "application/json"
       },
@@ -37,7 +35,7 @@ export default function Signin() {
         throw data
       })
     }).then(data => {
-      localStorage.setItem(WELLBEINGv1_JWT, JSON.stringify(data.token))
+      localStorage.setItem(config.WELLBEINGv1_JWT, JSON.stringify(data.token))
       navigate("/")
     }).catch(err => {
       setErrors(err)

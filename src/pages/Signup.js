@@ -2,9 +2,7 @@ import React from 'react'
 import { useRef, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import PublicNavbar from '../layouts/PublicNavbar'
-
-const BASE_URL = "http://3.0.48.60/api/v1"
-
+import { config } from '../constants/Constants'
 
 
 export default function Signup() {
@@ -24,7 +22,7 @@ export default function Signup() {
     const password = passwordElement.current.value
     const confirmPassword = confirmPasswordElement.current.value
 
-    fetch(BASE_URL+"/auth/signup", {
+    fetch(config.BASE_URL+"/auth/signup", {
         headers: {
           "content-type": "application/json"
         },

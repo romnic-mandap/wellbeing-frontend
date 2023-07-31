@@ -1,15 +1,14 @@
 import React from 'react'
 import { useNavigate, Link } from "react-router-dom"
 import "./PrivateNavbar.css"
-
-const WELLBEINGv1_JWT = "WELLBEINGV1_JWT"
+import { config } from '../constants/Constants'
 
 export default function PrivateNavbar() {
   const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    localStorage.setItem(WELLBEINGv1_JWT, null)
+    localStorage.setItem(config.WELLBEINGv1_JWT, null)
     navigate("/signin")
   }
 

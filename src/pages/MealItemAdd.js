@@ -5,9 +5,7 @@ import PrivateNavbar from '../layouts/PrivateNavbar'
 import "../util/helperfunctions"
 import jwt_decode from "jwt-decode"
 import { dateTimeConverter, format24h } from '../util/helperfunctions'
-
-const BASE_URL = "http://3.0.48.60/api/v1"
-const WELLBEINGv1_JWT = "WELLBEINGV1_JWT"
+import { config } from '../constants/Constants'
 
 export default function AddMealItem() {
   const navigate = useNavigate()
@@ -15,12 +13,12 @@ export default function AddMealItem() {
   {/* check if jwt else go to sign in */}
   const [jwt, setJwt] = useState()
   useEffect(() => {
-    const jwt = JSON.parse(localStorage.getItem(WELLBEINGv1_JWT))
+    const jwt = JSON.parse(localStorage.getItem(config.WELLBEINGv1_JWT))
     if(jwt){
       let decodedJwt = jwt_decode(jwt)
       let currentDate = new Date()
       if (decodedJwt.exp * 1000 < currentDate.getTime()){
-        localStorage.setItem(WELLBEINGv1_JWT, null)
+        localStorage.setItem(config.WELLBEINGv1_JWT, null)
         navigate("/signin")
       }else{
         setJwt(jwt)
@@ -56,7 +54,7 @@ export default function AddMealItem() {
     const mealDesc = mealDescElement.current.value
     const mealNote = mealNoteElement.current.value
 
-    fetch(BASE_URL+"/meals", {
+    fetch(config.BASE_URL+"/meals", {
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer " + jwt
