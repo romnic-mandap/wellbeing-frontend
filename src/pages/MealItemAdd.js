@@ -6,7 +6,7 @@ import "../util/helperfunctions"
 import jwt_decode from "jwt-decode"
 import { dateTimeConverter, format24h } from '../util/helperfunctions'
 
-const BASE_URL = "http://localhost:8080/api/v1"
+const BASE_URL = "http://3.0.48.60/api/v1"
 const WELLBEINGv1_JWT = "WELLBEINGV1_JWT"
 
 export default function AddMealItem() {

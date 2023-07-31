@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import PublicNavbar from '../layouts/PublicNavbar'
 
-const BASE_URL = "http://localhost:8080/api/v1"
+const BASE_URL = "http://3.0.48.60/api/v1"
 const WELLBEINGv1_JWT = "WELLBEINGV1_JWT"
 
 export default function Signin() {
