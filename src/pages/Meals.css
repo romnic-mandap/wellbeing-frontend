@@ -1,3 +1,7 @@
 .card-box {
     padding: 6px 6px 0px 6px;
 }
+
+.card-box-mid {
+    padding: 0px 6px 0px 6px;
+}

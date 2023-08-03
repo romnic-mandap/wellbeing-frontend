@@ -108,12 +108,41 @@ export default function Meals() {
           <form onSubmit={handleSearch}>
             <div className="input-group mb-3 card-box">
               <input type="text" ref={searchElement} className="form-control" placeholder="Search meal and notes... " />
-              <div className="input-group-append">
-                <button className="btn btn-primary" type="submit">Search</button>
-              </div>
+              <button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm">fltr</button>
+              <button className="btn btn-primary" type="submit">Search</button>
+            </div>
 
+            {/* search filters collapsible */}
+            <div className="collapse" id="collapseForm">
+              <div class="input-group mb-3 card-box-mid">
+                {/* to be added in future update...
+                <div class="input-group-text">
+                  <input class="form-check-input mt-0" type="checkbox" />
+                </div>
+                */}
+                <input type="date" class="form-control" />
+                <span class="input-group-text">-</span>
+                <input type="date" class="form-control" />
+              </div>
+              <div class="input-group mb-3 card-box-mid">
+                <input type="time" class="form-control" />
+                <span class="input-group-text">-</span>
+                <input type="time" class="form-control" />
+              </div>
+              <div className="input-group mb-3 card-box-mid">
+                <select className="form-select">
+                  <option selected>All Meals...</option>
+                  <option >Light</option>
+                  <option >Medium</option>
+                  <option >Heavy</option>
+                </select>
+                <button className="btn btn-outline-secondary" type="button">Clear Filters...</button>
+              </div>
             </div>
           </form>
+
+
+
         </fieldset>
       </div>
 
