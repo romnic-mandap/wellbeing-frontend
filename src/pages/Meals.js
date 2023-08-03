@@ -138,12 +138,12 @@ export default function Meals() {
           <form onSubmit={handleSearch}>
             <div className="input-group mb-3 card-box">
               <input type="text" ref={searchElement} className="form-control" placeholder="Search meal and notes... " />
-              <button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm">fltr</button>
+              {/*<button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm">fltr</button>*/}
               <button className="btn btn-primary" type="submit">Search</button>
             </div>
 
             {/* search filters collapsible */}
-            <div className="collapse" id="collapseForm">
+            <div className="collapse show" id="collapseForm">
               <div className="input-group mb-3 card-box-mid">
                 {/* to be added in future update...
                 <div className="input-group-text">
