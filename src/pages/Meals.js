@@ -144,20 +144,20 @@ export default function Meals() {
 
             {/* search filters collapsible */}
             <div className="collapse" id="collapseForm">
-              <div class="input-group mb-3 card-box-mid">
+              <div className="input-group mb-3 card-box-mid">
                 {/* to be added in future update...
-                <div class="input-group-text">
-                  <input class="form-check-input mt-0" type="checkbox" />
+                <div className="input-group-text">
+                  <input className="form-check-input mt-0" type="checkbox" />
                 </div>
                 */}
-                <input type="date" class="form-control" ref={startDateElement} />
-                <span class="input-group-text">-</span>
-                <input type="date" class="form-control" ref={endDateElement} />
+                <input type="date" className="form-control" ref={startDateElement} />
+                <span className="input-group-text">-</span>
+                <input type="date" className="form-control" ref={endDateElement} />
               </div>
-              <div class="input-group mb-3 card-box-mid">
-                <input type="time" class="form-control" ref={startTimeElement} />
-                <span class="input-group-text">-</span>
-                <input type="time" class="form-control" ref={endTimeElement} />
+              <div className="input-group mb-3 card-box-mid">
+                <input type="time" className="form-control" ref={startTimeElement} />
+                <span className="input-group-text">-</span>
+                <input type="time" className="form-control" ref={endTimeElement} />
               </div>
               <div className="input-group mb-3 card-box-mid">
                 <select className="form-select" ref={selectedMealElement}>

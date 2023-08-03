@@ -5,6 +5,7 @@ import jwt_decode from "jwt-decode"
 import PrivateNavbar from '../layouts/PrivateNavbar'
 import { dateTimeConverter } from '../util/helperfunctions'
 import { config } from '../constants/Constants'
+import { Button } from 'bootstrap'
 
 export default function MealItemEdit() {
   const navigate = useNavigate()
@@ -132,66 +133,119 @@ export default function MealItemEdit() {
     })
   }
 
+  /* UNFINISHED, NEED TO LEARN MORE STUFF SPECIFIC TO THIS
+  const handleDeleteAfterMealNote = (amnId) => {
+    setErrors(null)
+
+    fetch(config.BASE_URL+"/after-meal-notes/"+amnId, {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "DELETE",
+    }).then(res => {
+      if(res.status === 200){
+        
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).catch(err => {
+      setErrors(err)
+    })
+  }
+  */
+
   return (
     <>
-        <PrivateNavbar />
+      <PrivateNavbar />
 
-        <nav className='m-2'>
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><Link to="/meals">Meals</Link></li>
-            <li class="breadcrumb-item active">Meal Item</li>
-          </ol>
-        </nav>
+      <nav className='m-2'>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><Link to="/meals">Meals</Link></li>
+          <li class="breadcrumb-item active">Meal Item</li>
+        </ol>
+      </nav>
 
-        <div className="card">
-          <div className="card-header">
-            <h3 style={{display:'inline-block'}}>Edit Meal Item</h3>
-            <button className="btn btn-primary mb-3 btn-sm" onClick={handleDelete} style={{display:'inline-block',marginLeft:"10px",marginTop:"5px"}}>Delete</button>
-          </div>
-          <div className="card-body">
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label className="form-label">Date: </label>
-                <input type="date" className="form-control" ref={mealDateElement} />
-                <p className="form-text">*dd/mm/yyyy</p>
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Time: </label>
-                <input type="time" className="form-control" ref={mealTimeElement} />
-              </div>
-              <div className="mb-3">
-                <div className="btn-group">
-                  <input type="radio" className="btn-check" name="mealsize" id="mealsize1" value="light" checked={mealsize === "light"} onChange={(e) => setMealsize(e.target.value)}/>
-                  <label className="btn btn-outline-primary" for="mealsize1">light</label>
-
-                  <input type="radio" className="btn-check" name="mealsize" id="mealsize2" value="medium" checked={mealsize === "medium"} onChange={(e) => setMealsize(e.target.value)}/>
-                  <label className="btn btn-outline-primary" for="mealsize2">medium</label>
-
-                  <input type="radio" className="btn-check" name="mealsize" id="mealsize3" value="heavy" checked={mealsize === "heavy"} onChange={(e) => setMealsize(e.target.value)}/>
-                  <label className="btn btn-outline-primary" for="mealsize3">heavy</label>
-                </div>
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Meal: </label>
-                <input autoFocus type="text" className="form-control" ref={mealDescElement} />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Note: </label>
-                <input type="text" className="form-control" ref={mealNoteElement} />
-                <p className="form-text">*optional</p>
-              </div>
-
-              <button type="submit" className="btn btn-primary mb-3">Submit</button>
-
-              {(errors) && (
-                <div className="alert alert-danger">
-                  {errors['error(s)']?.map(e => {return <p>{e}</p>})}
-                </div>
-              )}
-
-            </form>
-          </div>
+      <div className="card">
+        <div className="card-header">
+          <h3 style={{ display: 'inline-block' }}>Edit Meal Item</h3>
+          <button className="btn btn-primary mb-3 btn-sm" onClick={handleDelete} style={{ display: 'inline-block', marginLeft: "10px", marginTop: "5px" }}>Delete</button>
         </div>
+        <div className="card-body">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label className="form-label">Date: </label>
+              <input type="date" className="form-control" ref={mealDateElement} />
+              <p className="form-text">*dd/mm/yyyy</p>
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Time: </label>
+              <input type="time" className="form-control" ref={mealTimeElement} />
+            </div>
+            <div className="mb-3">
+              <div className="btn-group">
+                <input type="radio" className="btn-check" name="mealsize" id="mealsize1" value="light" checked={mealsize === "light"} onChange={(e) => setMealsize(e.target.value)} />
+                <label className="btn btn-outline-primary" for="mealsize1">light</label>
+
+                <input type="radio" className="btn-check" name="mealsize" id="mealsize2" value="medium" checked={mealsize === "medium"} onChange={(e) => setMealsize(e.target.value)} />
+                <label className="btn btn-outline-primary" for="mealsize2">medium</label>
+
+                <input type="radio" className="btn-check" name="mealsize" id="mealsize3" value="heavy" checked={mealsize === "heavy"} onChange={(e) => setMealsize(e.target.value)} />
+                <label className="btn btn-outline-primary" for="mealsize3">heavy</label>
+              </div>
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Meal: </label>
+              <input autoFocus type="text" className="form-control" ref={mealDescElement} />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Note: </label>
+              <input type="text" className="form-control" ref={mealNoteElement} />
+              <p className="form-text">*optional</p>
+            </div>
+
+            <button type="submit" className="btn btn-primary mb-3">Submit</button>
+
+            {(errors) && (
+              <div className="alert alert-danger">
+                {errors['error(s)']?.map(e => { return <p>{e}</p> })}
+              </div>
+            )}
+
+          </form>
+        </div>
+      </div>
+
+      {/*
+      <div className="card">
+        <div className="card-header">
+          <h5 style={{ display: 'inline-block' }}>After Meal Notes</h5>
+        </div>
+
+        <div className="input-group mb-3 card-box">
+          <input type="text" className="form-control" placeholder="add after meal note... " />
+          <button className="btn btn-primary" type="button">Add</button>
+        </div>
+        
+        {(typeof(mealObj) !== 'undefined' && mealObj != null) && (typeof(mealObj.afterMealNotes) !== 'undefined' && mealObj.afterMealNotes != null) && (
+          <>
+            <ul className="list-group list-group-flush ">
+              {mealObj.afterMealNotes?.map(amn => {
+                return <li key={amn.id} className="list-group-item">
+                  <div className="input-group mb-3">
+                    <input type="text" className="form-control" value={amn.note} disabled/>
+                    <button className="btn btn-primary btn-sm" type="button" onClick={() => {handleDeleteAfterMealNote(amn.id)}}>Delete Note...</button>
+                  </div>
+                </li>
+              })}
+            </ul>
+          </>
+          )}
+          
+          
+      </div>
+       */}
     </>
     
   )

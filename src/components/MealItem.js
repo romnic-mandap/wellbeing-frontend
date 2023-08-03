@@ -20,23 +20,37 @@ export default function MealItem({ mealObj }) {
 
   return (
     <>
-    <div className="card">
-      <div className="card-header">
-      
+      <div className="card">
+        <div className="card-header">
+
+        </div>
+        <div className="card-body">
+          <p>{dayOfWeek(mealObj.date)}, {mealObj.date} @ {format24h(mealObj.time)}</p>
+          <p>meal: {mealObj.meal}</p>
+          {(mealObj.note) && (
+            <p>note: {mealObj.note}</p>
+          )}
+          <p>size: {mealObj.size}</p>
+
+          {/* THIS IS BLOCKING THE FILTER MENU FROM COLLAPSING!!! Expands just fine though once on click...
+          unsure anymore...
+          {(mealObj.afterMealNotes) && (
+            <>
+              <ul className="list-group list-group-flush">
+                {mealObj.afterMealNotes?.map(amn => {
+                  return <li className="list-group-item">{amn.note}</li>
+                })}
+              </ul>
+            </>
+          )}
+          */}
+
+          <Link to={"/meals/" + mealObj.id + "/edit"}>Edit</Link>
+        </div>
+        <div className="card-footer">
+
+        </div>
       </div>
-      <div className="card-body">
-      <p>{dayOfWeek(mealObj.date)}, {mealObj.date} @ {format24h(mealObj.time)}</p>
-        <p>meal: {mealObj.meal}</p>
-        {(mealObj.note) && (
-          <p>note: {mealObj.note}</p>
-        )}
-        <p>size: {mealObj.size}</p>
-        <Link to={"/meals/" + mealObj.id + "/edit"}>Edit</Link>
-      </div>
-      <div className="card-footer">
-        
-      </div>
-    </div>
     </>
   )
 }
