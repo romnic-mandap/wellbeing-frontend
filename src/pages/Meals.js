@@ -15,6 +15,11 @@ export default function Meals() {
   const [loading, setLoading] = useState(false)
 
   const searchElement = useRef()
+  const startDateElement = useRef()
+  const endDateElement = useRef()
+  const startTimeElement = useRef()
+  const endTimeElement = useRef()
+  const selectedMealElement = useRef()
 
   const [jwt, setJwt] = useState()
   useEffect(() => {
@@ -63,6 +68,15 @@ export default function Meals() {
     })
   }, [jwt])
 
+  const handleClearFilters = (e) => {
+    e.preventDefault()
+    startDateElement.current.value = ""
+    endDateElement.current.value = ""
+    startTimeElement.current.value = ""
+    endTimeElement.current.value = ""
+    selectedMealElement.current.value = "All Meals..."
+  }
+
   const handleSearch = (e) => {
     setErrors(null)
     setLoading(true)
@@ -71,9 +85,25 @@ export default function Meals() {
 
     const search = searchElement.current.value
     var searchValue = search || ""
+    // filter values
+    const startDate = startDateElement.current.value
+    const endDate = endDateElement.current.value
+    const startTime = startTimeElement.current.value
+    const endTime = endTimeElement.current.value
+    const selectedMeal = selectedMealElement.current.value
+    var startDateValue = startDate || ""
+    var endDateValue = endDate || ""
+    var startTimeValue = startTime || ""
+    var endTimeValue = endTime || ""
+    var selectedMealValue = selectedMeal === "All Meals..." ? "" : selectedMeal.toLowerCase()
 
     fetch(config.BASE_URL + "/meals?" + new URLSearchParams({
-      q: searchValue
+      q: searchValue,
+      m: selectedMealValue,
+      sd: startDateValue,
+      ed: endDateValue,
+      st: startTimeValue,
+      et: endTimeValue
     }), {
       headers: {
         "content-type": "application/json",
@@ -120,23 +150,23 @@ export default function Meals() {
                   <input class="form-check-input mt-0" type="checkbox" />
                 </div>
                 */}
-                <input type="date" class="form-control" />
+                <input type="date" class="form-control" ref={startDateElement} />
                 <span class="input-group-text">-</span>
-                <input type="date" class="form-control" />
+                <input type="date" class="form-control" ref={endDateElement} />
               </div>
               <div class="input-group mb-3 card-box-mid">
-                <input type="time" class="form-control" />
+                <input type="time" class="form-control" ref={startTimeElement} />
                 <span class="input-group-text">-</span>
-                <input type="time" class="form-control" />
+                <input type="time" class="form-control" ref={endTimeElement} />
               </div>
               <div className="input-group mb-3 card-box-mid">
-                <select className="form-select">
+                <select className="form-select" ref={selectedMealElement}>
                   <option selected>All Meals...</option>
                   <option >Light</option>
                   <option >Medium</option>
                   <option >Heavy</option>
                 </select>
-                <button className="btn btn-outline-secondary" type="button">Clear Filters...</button>
+                <button className="btn btn-outline-secondary" type="button" onClick={handleClearFilters}>Clear Filters...</button>
               </div>
             </div>
           </form>
