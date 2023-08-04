@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react"
 import { useNavigate, Link, useParams } from 'react-router-dom'
 import jwt_decode from "jwt-decode"
 import PrivateNavbar from '../layouts/PrivateNavbar'
-import { dateTimeConverter } from '../util/helperfunctions'
+import { dateTimeConverter, compareByIdDesc, dayOfWeek, format24h, dateStringShort, format24hNoSpace, dayOfWeekShort } from '../util/helperfunctions'
 import { config } from '../constants/Constants'
 import { Button } from 'bootstrap'
 
@@ -51,6 +51,10 @@ export default function MealItemEdit() {
         throw data
       })
     }).then(data => {
+      data = {
+        ...data,
+        afterMealNotes: [...data.afterMealNotes.sort(compareByIdDesc)]
+      }
       setMealObj(data)
     }).catch(err => {
       setErrors(err)
@@ -63,6 +67,8 @@ export default function MealItemEdit() {
   const mealTimeElement = useRef()
   const mealDescElement = useRef()
   const mealNoteElement = useRef()
+
+  const addAfterMealNoteElement = useRef()
 
   useEffect(() => {
     if (mealObj === null || mealObj === undefined) return
@@ -133,7 +139,56 @@ export default function MealItemEdit() {
     })
   }
 
-  /* UNFINISHED, NEED TO LEARN MORE STUFF SPECIFIC TO THIS
+  const handleAddAfterMealNote = () => {
+    setErrors(null)
+
+    const addAfterMealNote = addAfterMealNoteElement.current.value
+
+    if (addAfterMealNote.length==0){
+      setErrors({'error(s)': ['aftermealnote cannot be null...']})
+      return
+    }
+      
+    {/* add current date and itme to inputs */}
+    const [nowDate, nowTime] = dateTimeConverter(new Date())
+
+    fetch(config.BASE_URL+"/after-meal-notes", {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "POST",
+      body: JSON.stringify({
+        "mealId": mealObj.id,
+        "date": nowDate,
+        "time": nowTime,
+        "note": addAfterMealNote
+      })
+    }).then(res => {
+      if(res.status === 201){
+        return res.json()
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).then(data => {
+      let nAFN = [{
+        mealId: data,
+        date: nowDate,
+        time: nowTime,
+        note: addAfterMealNote
+      }, ...mealObj.afterMealNotes]
+        setMealObj(prevMealObj => ({
+          ...prevMealObj,
+          afterMealNotes: [...nAFN]
+        }))
+        addAfterMealNoteElement.current.value = ""
+        return
+    }).catch(err => {
+      setErrors(err)
+    })
+  }
+
   const handleDeleteAfterMealNote = (amnId) => {
     setErrors(null)
 
@@ -145,7 +200,12 @@ export default function MealItemEdit() {
       method: "DELETE",
     }).then(res => {
       if(res.status === 200){
-        
+        let nAFN = [...mealObj.afterMealNotes.filter((amn) => amn.id !== amnId)]
+        setMealObj(prevMealObj => ({
+          ...prevMealObj,
+          afterMealNotes: [...nAFN]
+        }))
+        return
       }
       return res.json().then(data => {
         throw data
@@ -154,7 +214,6 @@ export default function MealItemEdit() {
       setErrors(err)
     })
   }
-  */
 
   return (
     <>
@@ -217,25 +276,25 @@ export default function MealItemEdit() {
         </div>
       </div>
 
-      {/*
+      
       <div className="card">
         <div className="card-header">
           <h5 style={{ display: 'inline-block' }}>After Meal Notes</h5>
         </div>
 
         <div className="input-group mb-3 card-box">
-          <input type="text" className="form-control" placeholder="add after meal note... " />
-          <button className="btn btn-primary" type="button">Add</button>
+          <input type="text" className="form-control" placeholder="add after meal note... " ref={addAfterMealNoteElement}/>
+          <button className="btn btn-primary" type="button" onClick={handleAddAfterMealNote}>Add</button>
         </div>
         
         {(typeof(mealObj) !== 'undefined' && mealObj != null) && (typeof(mealObj.afterMealNotes) !== 'undefined' && mealObj.afterMealNotes != null) && (
           <>
             <ul className="list-group list-group-flush ">
-              {mealObj.afterMealNotes?.map(amn => {
+              {mealObj?.afterMealNotes?.map(amn => {
                 return <li key={amn.id} className="list-group-item">
                   <div className="input-group mb-3">
-                    <input type="text" className="form-control" value={amn.note} disabled/>
-                    <button className="btn btn-primary btn-sm" type="button" onClick={() => {handleDeleteAfterMealNote(amn.id)}}>Delete Note...</button>
+                    <input type="text" className="form-control" value={format24hNoSpace(amn.time)+"."+dayOfWeekShort(amn.date)+": "+amn.note} disabled/>
+                    <button className="btn btn-primary btn-sm" type="button" onClick={() => {handleDeleteAfterMealNote(amn.id)}}>Delete...</button>
                   </div>
                 </li>
               })}
@@ -245,7 +304,7 @@ export default function MealItemEdit() {
           
           
       </div>
-       */}
+
     </>
     
   )

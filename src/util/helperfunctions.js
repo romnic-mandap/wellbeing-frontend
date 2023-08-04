@@ -1,3 +1,20 @@
+export function compareByIdDesc(a,b){
+    if (a.id < b.id) {
+        return 1;
+      }
+      if (a.id > b.id) {
+        return -1;
+      }
+      return 0;
+}
+
+export function dateStringShort(date){
+    {/* "yyyy-mm-dd" -> "yy.mm.dd" */}
+    let parts = date.split("-")
+    parts[0] = parts[0].substring(2)
+    return parts.join(".")
+}
+
 export function dateTimeConverter(dateObj){
     {/* returns ["yyyy-mm-dd", "hh:mm"] */}
     let h = dateObj.getHours() < 10 ? "0"+dateObj.getHours() : dateObj.getHours() 
@@ -39,6 +56,25 @@ export function format24h(stringTime){
         let n = parseInt(parts[0]) - 12
         n = (n === 0 ? 12 : n)
         return n.toString() + ":" + parts[1] + " pm"
+    }
+}
+
+export function format24hNoSpace(stringTime){
+    {/* "13:27:00" -> "1:27pm" */}
+    let parts = stringTime.split(":")
+
+    if(parts[0].substr(0,1) === "0"){
+        parts[0] = parts[0].substr(1)
+    }
+
+    if(parseInt(parts[0]) >= 0 && parseInt(parts[0]) <= 11){
+        let n = parseInt(parts[0])
+        n = (n === 0 ? 12 : n)
+        return n.toString() + ":" + parts[1] + "am"
+    }else{
+        let n = parseInt(parts[0]) - 12
+        n = (n === 0 ? 12 : n)
+        return n.toString() + ":" + parts[1] + "pm"
     }
 }
 

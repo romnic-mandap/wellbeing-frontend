@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useRef } from "react"
 import { useNavigate, Link } from "react-router-dom"
+import { compareByIdDesc } from '../util/helperfunctions' 
 import PrivateNavbar from '../layouts/PrivateNavbar'
 import jwt_decode from "jwt-decode"
 import MealItem from '../components/MealItem'
@@ -62,7 +63,13 @@ export default function Meals() {
         throw data
       })
     }).then(data => {
-      setMealObjList(data)
+      let newdata = data.map(mobj => {
+        return {
+          ...mobj,
+          afterMealNotes: [...mobj.afterMealNotes.sort(compareByIdDesc)]
+        }
+      })
+      setMealObjList(newdata)
       setLoading(false)
     }).catch(err => {
       setErrors(err)
@@ -120,7 +127,13 @@ export default function Meals() {
         throw data
       })
     }).then(data => {
-      setMealObjList(data)
+      let newdata = data.map(mobj => {
+        return {
+          ...mobj,
+          afterMealNotes: [...mobj.afterMealNotes.sort(compareByIdDesc)]
+        }
+      })
+      setMealObjList(newdata)
       setLoading(false)
     }).catch(err => {
       setErrors(err)
