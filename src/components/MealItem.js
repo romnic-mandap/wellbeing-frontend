@@ -1,7 +1,7 @@
 import React from 'react'
-import { dayOfWeek } from '../util/helperfunctions'
+import { dayOfWeek, dayOfWeekShort } from '../util/helperfunctions'
 import { Link } from 'react-router-dom'
-import { format24h } from '../util/helperfunctions'
+import { format24h, format24hHour } from '../util/helperfunctions'
 
 export default function MealItem({ mealObj }) {
   {/*
@@ -32,9 +32,7 @@ export default function MealItem({ mealObj }) {
           )}
           <p>size: {mealObj.size}</p>
 
-          {/* THIS IS BLOCKING THE FILTER MENU FROM COLLAPSING!!! Expands just fine though once on click...
-          unsure anymore...
-          {(mealObj.afterMealNotes) && (
+          {(mealObj.afterMealNotes != null && mealObj.afterMealNotes != undefined) ? (
             <>
               <ul className="list-group list-group-flush">
                 {mealObj.afterMealNotes?.map(amn => {
@@ -42,8 +40,7 @@ export default function MealItem({ mealObj }) {
                 })}
               </ul>
             </>
-          )}
-          */}
+          ) : null }
 
           <Link to={"/meals/" + mealObj.id + "/edit"}>Edit</Link>
         </div>
