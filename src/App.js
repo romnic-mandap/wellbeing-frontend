@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom"
 import Signin from "./pages/Signin"
 import Signup from "./pages/Signup"
 import Home from "./pages/Home"
-import Meals from "./pages/Meals"
+import Meals from "./pages/meals/Meals"
 import MealItemAdd from './pages/MealItemAdd'
 import MealItemEdit from './pages/MealItemEdit'
 

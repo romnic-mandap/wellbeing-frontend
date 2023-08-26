@@ -1,10 +1,23 @@
 import React from 'react'
 import { useNavigate, Link } from "react-router-dom"
+import { useState } from 'react';
 import "./PrivateNavbar.css"
 import { config } from '../constants/Constants'
+import Container from 'react-bootstrap/Container';
+import { List } from 'react-bootstrap-icons';
+import Navbar from 'react-bootstrap/Navbar';
+import Button from 'react-bootstrap/Button';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import PrivateSidebar from './PrivateSidebar';
 
 export default function PrivateNavbar() {
   const navigate = useNavigate()
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -13,17 +26,30 @@ export default function PrivateNavbar() {
   }
 
   return (
-    <nav className="navbar navbar-dark bg-primary">
-      <div className="container-fluid">
-        <a className="navbar-brand">
-          <Link to="/" id="navheadertext">Wellbeing</Link> 
-        </a>
+    <>
+      <Navbar sticky="top" className="navbar navbar-dark bg-primary">
+        <Container fluid>
+        <Button variant="primary" className="d-lg-none" onClick={handleShow}>
+            <List />
+          </Button>
+          <Navbar.Brand className="navbar-brand sidebar-brand flex-grow-1"><Link to="/" id="navheadertext">Wellbeing</Link> </Navbar.Brand>
+          <form className="d-flex" onSubmit={handleSubmit}>
+            <button className="btn btn-primary" type="submit">Sign out</button>
+          </form>
+        </Container>
+      </Navbar>
 
-        <form className="d-flex" onSubmit={handleSubmit}>
-          <button className="btn btn-primary" type="submit">Sign out</button>
-        </form>
+      <Offcanvas show={show} onHide={handleClose} className='bg-light'>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Wellbeing</Offcanvas.Title>
+        </Offcanvas.Header>
+        <PrivateSidebar />
 
-      </div>
-    </nav>
+
+      </Offcanvas>
+    </>
+
+
+
   )
 }

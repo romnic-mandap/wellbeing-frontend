@@ -1,0 +1,300 @@
+import React from 'react'
+import { useState, useEffect, useRef } from "react"
+import { useNavigate, Link } from "react-router-dom"
+import { compareByIdDesc } from '../../util/helperfunctions'
+import PrivateNavbar from '../../layouts/PrivateNavbar'
+import jwt_decode from "jwt-decode"
+import MealItem from '../../components/MealItem'
+import { config } from '../../constants/Constants'
+import "./Meals.css"
+import { useSelector, useDispatch } from 'react-redux'
+import { update, reset } from './mealSlice'
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import PrivateSidebar from '../../layouts/PrivateSidebar'
+
+export default function Meals() {
+  const navigate = useNavigate()
+
+  const filterOptions = useSelector((state) => state.meal)
+  useEffect(() => {
+    searchElement.current.value = filterOptions.search
+    startDateElement.current.value = filterOptions.startDate
+    endDateElement.current.value = filterOptions.endDate
+    startTimeElement.current.value = filterOptions.startTime
+    endTimeElement.current.value = filterOptions.endTime
+    selectedMealElement.current.value = filterOptions.selectedMeal == "" ? "All Meals..." : filterOptions.selectedMeal
+  }, [filterOptions])
+
+  const dispatch = useDispatch()
+
+  const [isExpandedFilter, setIsExpandedFilter] = useState(false)
+
+  const [errors, setErrors] = useState()
+
+  const [loading, setLoading] = useState(false)
+
+  const searchElement = useRef()
+  const startDateElement = useRef()
+  const endDateElement = useRef()
+  const startTimeElement = useRef()
+  const endTimeElement = useRef()
+  const selectedMealElement = useRef()
+
+  const [jwt, setJwt] = useState()
+  useEffect(() => {
+    const jwt = JSON.parse(localStorage.getItem(config.WELLBEINGv1_JWT))
+    if (jwt) {
+      let decodedJwt = jwt_decode(jwt)
+      let currentDate = new Date()
+      if (decodedJwt.exp * 1000 < currentDate.getTime()) {
+        localStorage.setItem(config.WELLBEINGv1_JWT, null)
+        navigate("/signin")
+      } else {
+        setJwt(jwt)
+      }
+    } else {
+      navigate("/signin")
+    }
+  }, [])
+
+  const [mealObjList, setMealObjList] = useState()
+  useEffect(() => {
+    setErrors(null)
+    setLoading(true)
+    if (jwt === null || jwt === undefined) {
+      setLoading(false)
+      return
+    }
+
+    var searchValue = filterOptions.search
+    var startDateValue = filterOptions.startDate
+    var endDateValue = filterOptions.endDate
+    var startTimeValue = filterOptions.startTime
+    var endTimeValue = filterOptions.endTime
+    var selectedMealValue = filterOptions.selectedMeal === "All Meals..." ? "" : filterOptions.selectedMeal.toLowerCase()
+
+    fetch(config.BASE_URL + "/meals?" + new URLSearchParams({
+      q: searchValue,
+      m: selectedMealValue,
+      sd: startDateValue,
+      ed: endDateValue,
+      st: startTimeValue,
+      et: endTimeValue
+    }), {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "GET"
+    }).then(res => {
+      if (res.status === 200) {
+        return res.json()
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).then(data => {
+      let newdata = data.map(mobj => {
+        return {
+          ...mobj,
+          afterMealNotes: [...mobj.afterMealNotes.sort(compareByIdDesc)]
+        }
+      })
+      setMealObjList(newdata)
+      setLoading(false)
+    }).catch(err => {
+      setErrors(err)
+      setLoading(false)
+    })
+  }, [jwt])
+
+  const handleClearFilters = (e) => {
+    e.preventDefault()
+    startDateElement.current.value = ""
+    endDateElement.current.value = ""
+    startTimeElement.current.value = ""
+    endTimeElement.current.value = ""
+    selectedMealElement.current.value = "All Meals..."
+
+    dispatch(reset())
+  }
+
+  const handleSearch = () => {
+    setErrors(null)
+    setLoading(true)
+    setMealObjList(null)
+
+    const search = searchElement.current.value
+    var searchValue = search || ""
+    // filter values
+    const startDate = startDateElement.current.value
+    const endDate = endDateElement.current.value
+    const startTime = startTimeElement.current.value
+    const endTime = endTimeElement.current.value
+    const selectedMeal = selectedMealElement.current.value
+
+    var startDateValue = startDate || ""
+    var endDateValue = endDate || ""
+    var startTimeValue = startTime || ""
+    var endTimeValue = endTime || ""
+
+    const payload = {
+      search: searchValue,
+      startDate: startDateValue,
+      endDate: endDateValue,
+      startTime: startTimeValue,
+      endTime: endTimeValue,
+      selectedMeal: selectedMeal
+    }
+    dispatch(update(payload))
+
+    var selectedMealValue = selectedMeal === "All Meals..." ? "" : selectedMeal.toLowerCase()
+
+    fetch(config.BASE_URL + "/meals?" + new URLSearchParams({
+      q: searchValue,
+      m: selectedMealValue,
+      sd: startDateValue,
+      ed: endDateValue,
+      st: startTimeValue,
+      et: endTimeValue
+    }), {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "GET"
+    }).then(res => {
+      if (res.status === 200) {
+        return res.json()
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).then(data => {
+      let newdata = data.map(mobj => {
+        return {
+          ...mobj,
+          afterMealNotes: [...mobj.afterMealNotes.sort(compareByIdDesc)]
+        }
+      })
+      setMealObjList(newdata)
+      setLoading(false)
+    }).catch(err => {
+      setErrors(err)
+      setLoading(false)
+    })
+  }
+
+  return (
+    <>
+      <PrivateNavbar />
+
+      <Container fluid>
+        <Row>
+          <Col lg="3" className="border d-none d-lg-block bg-light position-fixed p-0">
+            <PrivateSidebar />
+          </Col>
+          <Col className="col-lg-9 offset-lg-3 col-md-12 offset-md-0">
+
+            <Link to="/meals/add">Add Meal Item</Link>
+
+            <div className="card">
+              <div className="card-header" />
+
+              <fieldset disabled={loading}>
+                <form onSubmit={handleSearch}>
+                  {/*
+                  <div className="input-group mb-3 card-box">
+                    <button className="btn btn-primary" type="button">Prev</button>
+                    <select className="form-select">
+                      <option selected>Day</option>
+                      <option>Week</option>
+                      <option>Custom</option>
+                    </select>
+                    <input type="date" className="form-control" />
+                    <button className="btn btn-primary" type="button">Next</button>
+                  </div>
+                  <div className="input-group mb-3 card-box-mid">
+                      
+                      <input type="date" className="form-control" ref={startDateElement} />
+                      <span className="input-group-text">-</span>
+                      <input type="date" className="form-control" ref={endDateElement} />
+                    </div>
+                  */}
+                  <div className="input-group mb-3 card-box">
+                    <input type="text" ref={searchElement} className="form-control" placeholder="Search meal and notes... " />
+                    {/*<button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm">fltr</button>*/}
+                    <button className="btn btn-primary" type="button" onClick={() => { setIsExpandedFilter(prevVal => !prevVal) }}>fltr</button>
+                    <button className="btn btn-primary" type="submit">Search</button>
+                  </div>
+
+                  {/* search filters collapsible */}
+                  <div className={isExpandedFilter ? "collapse show" : "collapse"}>
+                    <div className="input-group mb-3 card-box-mid">
+
+                      <input type="date" className="form-control" ref={startDateElement} />
+                      <span className="input-group-text">-</span>
+                      <input type="date" className="form-control" ref={endDateElement} />
+                    </div>
+                    <div className="input-group mb-3 card-box-mid">
+                      <input type="time" className="form-control" ref={startTimeElement} />
+                      <span className="input-group-text">-</span>
+                      <input type="time" className="form-control" ref={endTimeElement} />
+                    </div>
+                    <div className="input-group mb-3 card-box-mid">
+                      <select className="form-select" ref={selectedMealElement}>
+                        <option selected>All Meals...</option>
+                        <option >Light</option>
+                        <option >Medium</option>
+                        <option >Heavy</option>
+                      </select>
+                      <button className="btn btn-outline-secondary" type="button" onClick={handleClearFilters}>Clear Filters...</button>
+                    </div>
+                  </div>
+                </form>
+
+
+
+              </fieldset>
+            </div>
+
+            {(loading) && (
+              <div class="d-flex justify-content-center col-12 flex-grow-1">
+                <div className="spinner-grow text-secondary">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+
+            )}
+
+            {(errors) && (
+              <div className="alert alert-danger">
+                {errors['error(s)']?.map(e => { return <p>{e}</p> })}
+              </div>
+            )}
+
+            {!mealObjList ? null : (
+              <>
+                {
+                  mealObjList.map((mo, index) => {
+                    if (index > 0 && mo.date !== mealObjList[index - 1].date) {
+                      return <><hr className="hr hrc" /><MealItem mealObj={mo} /></>
+                    } else {
+                      return <MealItem mealObj={mo} />
+                    }
+
+                  }
+                  )
+                }
+              </>
+            )
+            }
+
+          </Col>
+        </Row>
+      </Container>
+    </>
+  )
+}

@@ -256,7 +256,7 @@ export default function MealItemEdit() {
             </div>
             <div className="mb-3">
               <label className="form-label">Meal: </label>
-              <input autoFocus type="text" className="form-control" ref={mealDescElement} />
+              <input type="text" className="form-control" ref={mealDescElement} />
             </div>
             <div className="mb-3">
               <label className="form-label">Note: </label>

@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom"
 import jwt_decode from "jwt-decode"
 import PrivateNavbar from '../layouts/PrivateNavbar'
 import { config } from '../constants/Constants'
+import Counter from '../features/counter/Counter'
 
 export default function Home() {
   const navigate = useNavigate()
@@ -28,9 +29,11 @@ export default function Home() {
 
   return (
     <>
+      {navigate("/meals")}
       <PrivateNavbar />
       <div>Home {jwt}</div>
       <Link to="/meals">Meals</Link>
+      <Counter />
     </>
     
   )
