@@ -3,12 +3,13 @@ import { useState, useEffect, useRef } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { compareByIdDesc } from '../../util/helperfunctions'
 import PrivateNavbar from '../../layouts/PrivateNavbar'
+import { dayOfWeek, dayOfWeekShort, daysBetweenDates, dateFromDate } from '../../util/helperfunctions'
 import jwt_decode from "jwt-decode"
 import MealItem from '../../components/MealItem'
 import { config } from '../../constants/Constants'
 import "./Meals.css"
 import { useSelector, useDispatch } from 'react-redux'
-import { update, reset } from './mealSlice'
+import { update, reset, updateDates } from './mealSlice'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -16,6 +17,8 @@ import PrivateSidebar from '../../layouts/PrivateSidebar'
 
 export default function Meals() {
   const navigate = useNavigate()
+
+  const [selectedDateRange, setSelectedDateRange] = useState('Custom Date Range')
 
   const filterOptions = useSelector((state) => state.meal)
   useEffect(() => {
@@ -25,7 +28,21 @@ export default function Meals() {
     startTimeElement.current.value = filterOptions.startTime
     endTimeElement.current.value = filterOptions.endTime
     selectedMealElement.current.value = filterOptions.selectedMeal == "" ? "All Meals..." : filterOptions.selectedMeal
+
+    if (filterOptions.startDate == filterOptions.endDate && filterOptions.startDate) {
+      setSelectedDateRange(filterOptions.startDate + ", " + dayOfWeekShort(filterOptions.startDate))
+    } else if (filterOptions.startDate != filterOptions.endDate && filterOptions.startDate && filterOptions.endDate) {
+      setSelectedDateRange(filterOptions.startDate + ", " + dayOfWeekShort(filterOptions.startDate) + " - " + filterOptions.endDate + ", " + dayOfWeekShort(filterOptions.endDate))
+    } else if (filterOptions.startDate && !filterOptions.endDate) {
+      setSelectedDateRange(filterOptions.startDate + ", " + dayOfWeekShort(filterOptions.startDate) + " onwards")
+    } else if (!filterOptions.startDate && filterOptions.endDate) {
+      setSelectedDateRange("up through " + filterOptions.endDate + ", " + dayOfWeekShort(filterOptions.endDate))
+    } else {
+      setSelectedDateRange('Custom Date Range')
+    }
   }, [filterOptions])
+
+
 
   const dispatch = useDispatch()
 
@@ -110,6 +127,52 @@ export default function Meals() {
     })
   }, [jwt])
 
+  const handleMoveDateRangePrev = (e) => {
+    if (filterOptions.startDate && filterOptions.endDate){
+      var days = daysBetweenDates(filterOptions.startDate, filterOptions.endDate)
+      if (days == 0){
+        const payload = {
+          startDate: dateFromDate(filterOptions.startDate, -1),
+          endDate: dateFromDate(filterOptions.startDate, -1)
+        }
+        dispatch(updateDates(payload))
+      } else {
+        const payload = {
+          startDate: dateFromDate(filterOptions.startDate, (-1 * days) - 1),
+          endDate: dateFromDate(filterOptions.startDate, -1)
+        }
+        dispatch(updateDates(payload))
+      }
+      
+    }
+    
+  }
+  const handleMoveDateRangeNext = (e) => {
+    if (filterOptions.startDate && filterOptions.endDate){
+      var days = daysBetweenDates(filterOptions.startDate, filterOptions.endDate)
+      if (days == 0){
+        const payload = {
+          startDate: dateFromDate(filterOptions.startDate, 1),
+          endDate: dateFromDate(filterOptions.startDate, 1)
+        }
+        dispatch(updateDates(payload))
+
+
+      } else {
+        const payload = {
+          startDate: dateFromDate(filterOptions.endDate, 1),
+          endDate: dateFromDate(filterOptions.endDate, days+1)
+        }
+        dispatch(updateDates(payload))
+
+
+      }
+      
+    }
+    
+  }
+
+  
   const handleClearFilters = (e) => {
     e.preventDefault()
     startDateElement.current.value = ""
@@ -121,7 +184,11 @@ export default function Meals() {
     dispatch(reset())
   }
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    if (e) {
+      e.preventDefault()
+    }
+    
     setErrors(null)
     setLoading(true)
     setMealObjList(null)
@@ -223,7 +290,16 @@ export default function Meals() {
                       <input type="date" className="form-control" ref={endDateElement} />
                     </div>
                   */}
+
+
+
                   <div className="input-group mb-3 card-box">
+                    <span className="input-group-text flex-grow-1"><div className="text-center date-range-display">{selectedDateRange}</div></span>
+                    <button className="btn btn-primary" type="button" onClick={handleMoveDateRangePrev}>Prev</button>
+                    <button className="btn btn-primary" type="button" onClick={handleMoveDateRangeNext}>Next</button>
+                  </div>
+
+                  <div className="input-group mb-3 card-box-mid">
                     <input type="text" ref={searchElement} className="form-control" placeholder="Search meal and notes... " />
                     {/*<button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm">fltr</button>*/}
                     <button className="btn btn-primary" type="button" onClick={() => { setIsExpandedFilter(prevVal => !prevVal) }}>fltr</button>

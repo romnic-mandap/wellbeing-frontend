@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export function compareByIdDesc(a,b){
     if (a.id < b.id) {
         return 1;
@@ -6,6 +8,24 @@ export function compareByIdDesc(a,b){
         return -1;
       }
       return 0;
+}
+
+export function daysBetweenDates(startDate, endDate){
+    {/* yyyy-mm-dd */}
+    var sd = moment(startDate)
+    var ed = moment(endDate)
+    return Math.abs(sd.diff(ed, "days"))
+}
+
+export function dateFromDate(startDate, daysApart){
+    {/* yyyy-mm-dd, +-N */}
+    var sd = moment(startDate)
+    if (daysApart > 0){
+        return sd.add(daysApart, "days").format('YYYY-MM-DD')
+    } else if (daysApart < 0){
+        return sd.subtract(daysApart * -1, "days").format('YYYY-MM-DD')
+    }
+    return startDate;
 }
 
 export function dateStringShort(date){

@@ -6,6 +6,10 @@
     padding: 0px 6px 0px 6px;
 }
 
+.date-range-display {
+    margin: auto;
+}
+
 .hrc {
     border: none;
     height: 0px;
