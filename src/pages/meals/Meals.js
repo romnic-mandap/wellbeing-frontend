@@ -15,8 +15,15 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import PrivateSidebar from '../../layouts/PrivateSidebar'
 
+import { useGetPokemonByNameQuery } from '../../services/pokemon'
+
 export default function Meals() {
   const navigate = useNavigate()
+
+  // Using a query hook automatically fetches data and returns query values
+  const { data, error, isLoading } = useGetPokemonByNameQuery('pikachu')
+  // Individual hooks are also accessible under the generated endpoints:
+  // const { data, error, isLoading } = pokemonApi.endpoints.getPokemonByName.useQuery('bulbasaur')
 
   const [selectedDateRange, setSelectedDateRange] = useState('Custom Date Range')
 
@@ -128,9 +135,9 @@ export default function Meals() {
   }, [jwt])
 
   const handleMoveDateRangePrev = (e) => {
-    if (filterOptions.startDate && filterOptions.endDate){
+    if (filterOptions.startDate && filterOptions.endDate) {
       var days = daysBetweenDates(filterOptions.startDate, filterOptions.endDate)
-      if (days == 0){
+      if (days == 0) {
         const payload = {
           startDate: dateFromDate(filterOptions.startDate, -1),
           endDate: dateFromDate(filterOptions.startDate, -1)
@@ -143,14 +150,14 @@ export default function Meals() {
         }
         dispatch(updateDates(payload))
       }
-      
+
     }
-    
+
   }
   const handleMoveDateRangeNext = (e) => {
-    if (filterOptions.startDate && filterOptions.endDate){
+    if (filterOptions.startDate && filterOptions.endDate) {
       var days = daysBetweenDates(filterOptions.startDate, filterOptions.endDate)
-      if (days == 0){
+      if (days == 0) {
         const payload = {
           startDate: dateFromDate(filterOptions.startDate, 1),
           endDate: dateFromDate(filterOptions.startDate, 1)
@@ -161,18 +168,18 @@ export default function Meals() {
       } else {
         const payload = {
           startDate: dateFromDate(filterOptions.endDate, 1),
-          endDate: dateFromDate(filterOptions.endDate, days+1)
+          endDate: dateFromDate(filterOptions.endDate, days + 1)
         }
         dispatch(updateDates(payload))
 
 
       }
-      
+
     }
-    
+
   }
 
-  
+
   const handleClearFilters = (e) => {
     e.preventDefault()
     startDateElement.current.value = ""
@@ -188,7 +195,7 @@ export default function Meals() {
     if (e) {
       e.preventDefault()
     }
-    
+
     setErrors(null)
     setLoading(true)
     setMealObjList(null)
@@ -336,6 +343,8 @@ export default function Meals() {
               </fieldset>
             </div>
 
+
+
             {(loading) && (
               <div class="d-flex justify-content-center col-12 flex-grow-1">
                 <div className="spinner-grow text-secondary">
@@ -345,11 +354,15 @@ export default function Meals() {
 
             )}
 
+
+
             {(errors) && (
               <div className="alert alert-danger">
                 {errors['error(s)']?.map(e => { return <p>{e}</p> })}
               </div>
             )}
+
+
 
             {!mealObjList ? null : (
               <>
@@ -367,6 +380,23 @@ export default function Meals() {
               </>
             )
             }
+
+
+            <div className="card">
+              <div className="card-body text-center">
+                {error ? (
+                  <>Oh no, there was an error</>
+                ) : isLoading ? (
+                  <>Loading...</>
+                ) : data ? (
+                  <>
+                    <h3>{data.species.name}</h3>
+                    <img src={data.sprites.front_shiny} alt={data.species.name} />
+                  </>
+                ) : null}
+              </div>
+
+            </div>
 
           </Col>
         </Row>

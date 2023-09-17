@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import PrivateSidebar from './PrivateSidebar';
 
-export default function PrivateNavbar() {
+export default function PrivateNavbar({ active = "meals" }) {
   const navigate = useNavigate()
 
   const [show, setShow] = useState(false);
@@ -29,10 +29,14 @@ export default function PrivateNavbar() {
     <>
       <Navbar sticky="top" className="navbar navbar-dark bg-primary">
         <Container fluid>
-        <Button variant="primary" className="d-lg-none" onClick={handleShow}>
+          <Button variant="primary" className="d-lg-none" onClick={handleShow}>
             <List />
           </Button>
-          <Navbar.Brand className="navbar-brand sidebar-brand flex-grow-1"><Link to="/" id="navheadertext">Wellbeing</Link> </Navbar.Brand>
+          <Navbar.Brand className="navbar-brand sidebar-brand flex-grow-1">
+            <Link to="/" id="navheadertext">Wellbeing</Link> 
+            <span>_-_{active}</span>
+          </Navbar.Brand>
+          
           <form className="d-flex" onSubmit={handleSubmit}>
             <button className="btn btn-primary" type="submit">Sign out</button>
           </form>
@@ -43,8 +47,7 @@ export default function PrivateNavbar() {
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Wellbeing</Offcanvas.Title>
         </Offcanvas.Header>
-        <PrivateSidebar />
-
+        <PrivateSidebar active={active} />
 
       </Offcanvas>
     </>
