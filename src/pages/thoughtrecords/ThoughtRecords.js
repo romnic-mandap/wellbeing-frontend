@@ -27,7 +27,7 @@ export default function ThoughtRecords() {
   const endTimeElement = useRef()
 
   const [selectedDateRange, setSelectedDateRange] = useState('Custom Date Range')
-  const filterOptions = useSelector((state) => state.afterMealNote)
+  const filterOptions = useSelector((state) => state.thoughtRecord)
   useEffect(() => {
     searchElement.current.value = filterOptions.search
     startDateElement.current.value = filterOptions.startDate
@@ -142,7 +142,7 @@ export default function ThoughtRecords() {
     var startTimeValue = filterOptions.startTime
     var endTimeValue = filterOptions.endTime
 
-    fetch(config.BASE_URL + "/thought-records?" + new URLSearchParams({
+    fetch(config.BASE_V2_URL + "/thought-records?" + new URLSearchParams({
       q: searchValue,
       sd: startDateValue,
       ed: endDateValue,
@@ -162,7 +162,7 @@ export default function ThoughtRecords() {
         throw data
       })
     }).then(data => {
-      setThoughtRecordObjList(data)
+      setThoughtRecordObjList(data.content)
       setLoading(false)
     }).catch(err => {
       setErrors(err)
@@ -201,7 +201,7 @@ export default function ThoughtRecords() {
     }
     dispatch(update(payload))
 
-    fetch(config.BASE_URL + "/thought-records?" + new URLSearchParams({
+    fetch(config.BASE_V2_URL + "/thought-records?" + new URLSearchParams({
       q: searchValue,
       sd: startDateValue,
       ed: endDateValue,
@@ -221,7 +221,7 @@ export default function ThoughtRecords() {
         throw data
       })
     }).then(data => {
-      setThoughtRecordObjList(data)
+      setThoughtRecordObjList(data.content)
       setLoading(false)
     }).catch(err => {
       setErrors(err)

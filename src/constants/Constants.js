@@ -10,12 +10,14 @@ serve -s build
 
 const dev = {
   BASE_URL: "http://localhost:8080/api/v1",
+  BASE_V2_URL: "http://localhost:8080/api/v2",
   WELLBEINGv1_JWT: "WELLBEINGV1_JWT"  // localstorage key
 }
 
 // .env
 const prod = {
   BASE_URL: process.env.REACT_APP_PROD_BASE_URL,
+  BASE_V2_URL: process.env.REACT_APP_PROD_BASE_V2_URL,
   WELLBEINGv1_JWT: process.env.REACT_APP_PROD_WELLBEING_JWT
 }
 

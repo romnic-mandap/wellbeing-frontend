@@ -7,7 +7,9 @@ const initialState = {
     endDate: moment().format("YYYY-MM-DD"),
     startTime: "",
     endTime: "",
-    selectedMeal: ""
+    selectedMeal: "",
+    pageCurrent: 0,
+    pageSize: 32
 }
 
 const emptyState = {
@@ -16,7 +18,9 @@ const emptyState = {
     endDate: "",
     startTime: "",
     endTime: "",
-    selectedMeal: ""
+    selectedMeal: "",
+    pageCurrent: 0,
+    pageSize: 32
 }
 
 export const mealSlice = createSlice({
@@ -33,10 +37,16 @@ export const mealSlice = createSlice({
                 endDate: action.payload.endDate
             }
         },
+        updatePage: (state, action) => {
+            return {
+                ...state,
+                pageCurrent: action.payload.pageCurrent
+            }
+        },
         reset: (state) => emptyState
     }
 })
 
-export const { update, reset, updateDates } = mealSlice.actions
+export const { update, reset, updateDates, updatePage } = mealSlice.actions
 
 export default mealSlice.reducer

@@ -1,6 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
+import moment from 'moment';
 
 const initialState = {
+    search: "",
+    startDate: moment().format("YYYY-MM-DD"),
+    endDate: moment().format("YYYY-MM-DD"),
+    startTime: "",
+    endTime: ""
+}
+
+const emptyState = {
     search: "",
     startDate: "",
     endDate: "",
@@ -22,7 +31,7 @@ export const thoughtRecordsSlice = createSlice({
                 endDate: action.payload.endDate
             }
         },
-        reset: (state) => initialState
+        reset: (state) => emptyState
     }
 })
 

@@ -85,7 +85,7 @@ export default function AfterMealNotes() {
     var startTimeValue = filterOptions.startTime
     var endTimeValue = filterOptions.endTime
 
-    fetch(config.BASE_URL + "/after-meal-notes?" + new URLSearchParams({
+    fetch(config.BASE_V2_URL + "/after-meal-notes?" + new URLSearchParams({
       q: searchValue,
       sd: startDateValue,
       ed: endDateValue,
@@ -105,7 +105,7 @@ export default function AfterMealNotes() {
         throw data
       })
     }).then(data => {
-      setAfterMealNotesObjList(data)
+      setAfterMealNotesObjList(data.content)
       setLoading(false)
     }).catch(err => {
       setErrors(err)
@@ -204,7 +204,7 @@ export default function AfterMealNotes() {
     dispatch(update(payload))
 
 
-    fetch(config.BASE_URL + "/after-meal-notes?" + new URLSearchParams({
+    fetch(config.BASE_V2_URL + "/after-meal-notes?" + new URLSearchParams({
       q: searchValue,
       sd: startDateValue,
       ed: endDateValue,
@@ -224,7 +224,7 @@ export default function AfterMealNotes() {
         throw data
       })
     }).then(data => {
-      setAfterMealNotesObjList(data)
+      setAfterMealNotesObjList(data.content)
       setLoading(false)
     }).catch(err => {
       setErrors(err)

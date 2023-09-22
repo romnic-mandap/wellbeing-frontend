@@ -9,7 +9,7 @@ import MealItem from '../../components/MealItem'
 import { config } from '../../constants/Constants'
 import "./Meals.css"
 import { useSelector, useDispatch } from 'react-redux'
-import { update, reset, updateDates } from './mealSlice'
+import { update, reset, updateDates, updatePage } from './mealSlice'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -99,7 +99,7 @@ export default function Meals() {
     var endTimeValue = filterOptions.endTime
     var selectedMealValue = filterOptions.selectedMeal === "All Meals..." ? "" : filterOptions.selectedMeal.toLowerCase()
 
-    fetch(config.BASE_URL + "/meals?" + new URLSearchParams({
+    fetch(config.BASE_V2_URL + "/meals?" + new URLSearchParams({
       q: searchValue,
       m: selectedMealValue,
       sd: startDateValue,
@@ -120,7 +120,7 @@ export default function Meals() {
         throw data
       })
     }).then(data => {
-      let newdata = data.map(mobj => {
+      let newdata = data.content.map(mobj => {
         return {
           ...mobj,
           afterMealNotes: [...mobj.afterMealNotes.sort(compareByIdDesc)]
@@ -179,6 +179,16 @@ export default function Meals() {
 
   }
 
+  /*
+  const handleMovePagePrev = (e) => {
+    if(filterOptions.pageCurrent > 0){
+
+    }
+  }
+  const handleMovePageNext = (e) => {
+
+  }
+  */
 
   const handleClearFilters = (e) => {
     e.preventDefault()
@@ -226,7 +236,7 @@ export default function Meals() {
 
     var selectedMealValue = selectedMeal === "All Meals..." ? "" : selectedMeal.toLowerCase()
 
-    fetch(config.BASE_URL + "/meals?" + new URLSearchParams({
+    fetch(config.BASE_V2_URL + "/meals?" + new URLSearchParams({
       q: searchValue,
       m: selectedMealValue,
       sd: startDateValue,
@@ -247,7 +257,7 @@ export default function Meals() {
         throw data
       })
     }).then(data => {
-      let newdata = data.map(mobj => {
+      let newdata = data.content.map(mobj => {
         return {
           ...mobj,
           afterMealNotes: [...mobj.afterMealNotes.sort(compareByIdDesc)]
@@ -336,6 +346,18 @@ export default function Meals() {
                       <button className="btn btn-outline-secondary" type="button" onClick={handleClearFilters}>Clear Filters...</button>
                     </div>
                   </div>
+
+                  <div className="input-group mb-3 card-box-mid d-none">
+                    <span className="input-group-text flex-grow-1"><div className="text-center date-range-display">123</div></span>
+                    <span className="input-group-text flex-grow-1"><div className="text-center date-range-display">1-22</div></span>
+                    <span className="input-group-text flex-grow-1"><div className="text-center date-range-display">1/1</div></span>
+                    <button className="btn btn-primary" type="button">Prev</button>
+                    <button className="btn btn-primary" type="button">Next</button>
+                  </div>
+
+
+
+
                 </form>
 
 
