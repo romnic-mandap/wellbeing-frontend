@@ -6,7 +6,9 @@ const initialState = {
     startDate: moment().format("YYYY-MM-DD"),
     endDate: moment().format("YYYY-MM-DD"),
     startTime: "",
-    endTime: ""
+    endTime: "",
+    pageCurrent: 1,
+    pagesCount: 1
 }
 
 const emptyState = {
@@ -14,7 +16,9 @@ const emptyState = {
     startDate: "",
     endDate: "",
     startTime: "",
-    endTime: ""
+    endTime: "",
+    pageCurrent: 1,
+    pagesCount: 1
 }
 
 export const thoughtRecordsSlice = createSlice({
@@ -31,10 +35,17 @@ export const thoughtRecordsSlice = createSlice({
                 endDate: action.payload.endDate
             }
         },
+        updatePage: (state, action) => {
+            return {
+                ...state,
+                pageCurrent: action.payload.pageCurrent,
+                pagesCount: action.payload.pagesCount
+            }
+        },
         reset: (state) => emptyState
     }
 })
 
-export const { update, reset, updateDates } = thoughtRecordsSlice.actions
+export const { update, reset, updateDates, updatePage } = thoughtRecordsSlice.actions
 
 export default thoughtRecordsSlice.reducer

@@ -13,7 +13,8 @@ import { config } from '../../constants/Constants'
 import jwt_decode from "jwt-decode"
 import AfterMealNoteItem from '../../components/AfterMealNoteItem'
 import { dayOfWeek, dayOfWeekShort, daysBetweenDates, dateFromDate } from '../../util/helperfunctions'
-import { update, reset, updateDates } from './afterMealNotesSlice'
+import { update, reset, updateDates, updatePage } from './afterMealNotesSlice'
+import PaginationComponent from '../../components/PaginationComponent'
 
 export default function AfterMealNotes() {
   const navigate = useNavigate()
@@ -46,6 +47,9 @@ export default function AfterMealNotes() {
 
   const [selectedDateRange, setSelectedDateRange] = useState('Custom Date Range')
   const filterOptions = useSelector((state) => state.afterMealNote)
+  const foPageCurrent = useSelector((state) => state.afterMealNote.pageCurrent)
+  const foPagesCount = useSelector((state) => state.afterMealNote.pagesCount)
+
   useEffect(() => {
     searchElement.current.value = filterOptions.search
     startDateElement.current.value = filterOptions.startDate
@@ -84,13 +88,15 @@ export default function AfterMealNotes() {
     var endDateValue = filterOptions.endDate
     var startTimeValue = filterOptions.startTime
     var endTimeValue = filterOptions.endTime
+    var pageCurrent = filterOptions.pageCurrent - 1
 
     fetch(config.BASE_V2_URL + "/after-meal-notes?" + new URLSearchParams({
       q: searchValue,
       sd: startDateValue,
       ed: endDateValue,
       st: startTimeValue,
-      et: endTimeValue
+      et: endTimeValue,
+      p: pageCurrent
     }), {
       headers: {
         "content-type": "application/json",
@@ -106,6 +112,7 @@ export default function AfterMealNotes() {
       })
     }).then(data => {
       setAfterMealNotesObjList(data.content)
+      dispatch(updatePage({ pageCurrent: data.pageable.pageNumber + 1, pagesCount: data.totalPages }))
       setLoading(false)
     }).catch(err => {
       setErrors(err)
@@ -163,13 +170,13 @@ export default function AfterMealNotes() {
 
   const handleClearFilters = (e) => {
     e.preventDefault()
-    searchElement.current.value = ""
+    //searchElement.current.value = ""
     startDateElement.current.value = ""
     endDateElement.current.value = ""
     startTimeElement.current.value = ""
     endTimeElement.current.value = ""
 
-    dispatch(reset())
+    //dispatch(reset())
   }
 
   const handleSearch = (e) => {
@@ -225,11 +232,60 @@ export default function AfterMealNotes() {
       })
     }).then(data => {
       setAfterMealNotesObjList(data.content)
+      dispatch(updatePage({ pageCurrent: data.pageable.pageNumber + 1, pagesCount: data.totalPages }))
       setLoading(false)
     }).catch(err => {
       setErrors(err)
       setLoading(false)
     })
+  }
+
+  const getDifferentPage = (page) => {
+    setErrors(null)
+    setLoading(true)
+    setAfterMealNotesObjList(null)
+
+    var searchValue = filterOptions.search
+    var startDateValue = filterOptions.startDate
+    var endDateValue = filterOptions.endDate
+    var startTimeValue = filterOptions.startTime
+    var endTimeValue = filterOptions.endTime
+
+    fetch(config.BASE_V2_URL + "/after-meal-notes?" + new URLSearchParams({
+      q: searchValue,
+      sd: startDateValue,
+      ed: endDateValue,
+      st: startTimeValue,
+      et: endTimeValue,
+      p: page - 1
+    }), {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "GET"
+    }).then(res => {
+      if (res.status === 200) {
+        return res.json()
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).then(data => {
+      setAfterMealNotesObjList(data.content)
+      dispatch(updatePage({ pageCurrent: data.pageable.pageNumber + 1, pagesCount: data.totalPages }))
+      setLoading(false)
+    }).catch(err => {
+      setErrors(err)
+      setLoading(false)
+    })
+
+  }
+
+  const setPageFunction = (page) => {
+    if (foPageCurrent != page) {
+      getDifferentPage(page)
+    }
   }
 
   const afterMealNotes = (
@@ -269,6 +325,7 @@ export default function AfterMealNotes() {
             <div className="input-group mb-3 card-box-mid">
               <input type="text" ref={searchElement} className="form-control" placeholder="Search meal and notes... " />
               {/*<button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm">fltr</button>*/}
+              <button className="btn btn-outline-secondary" type="button" onClick={() => { searchElement.current.value = '' }}>X</button>
               <button className="btn btn-primary" type="button" onClick={() => { setIsExpandedFilter(prevVal => !prevVal) }}>fltr</button>
               <button className="btn btn-primary" type="submit">Search</button>
             </div>
@@ -295,6 +352,12 @@ export default function AfterMealNotes() {
 
         </fieldset>
       </div>
+
+      <PaginationComponent
+        pagenum={foPageCurrent}
+        pagetotal={foPagesCount}
+        setpagefunction={(p) => setPageFunction(p)}
+      />
 
       {(loading) && (
         <div class="d-flex justify-content-center col-12 flex-grow-1">
@@ -327,6 +390,12 @@ export default function AfterMealNotes() {
         </>
       )
       }
+
+      <PaginationComponent
+        pagenum={foPageCurrent}
+        pagetotal={foPagesCount}
+        setpagefunction={(p) => setPageFunction(p)}
+      />
     </>
   )
 

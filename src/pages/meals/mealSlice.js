@@ -8,7 +8,8 @@ const initialState = {
     startTime: "",
     endTime: "",
     selectedMeal: "",
-    pageCurrent: 0,
+    pageCurrent: 1,
+    pagesCount: 1,
     pageSize: 32
 }
 
@@ -19,7 +20,8 @@ const emptyState = {
     startTime: "",
     endTime: "",
     selectedMeal: "",
-    pageCurrent: 0,
+    pageCurrent: 1,
+    pagesCount: 1,
     pageSize: 32
 }
 
@@ -40,7 +42,8 @@ export const mealSlice = createSlice({
         updatePage: (state, action) => {
             return {
                 ...state,
-                pageCurrent: action.payload.pageCurrent
+                pageCurrent: action.payload.pageCurrent,
+                pagesCount: action.payload.pagesCount
             }
         },
         reset: (state) => emptyState

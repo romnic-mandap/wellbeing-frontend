@@ -12,7 +12,8 @@ import PrivateSidebar from '../../layouts/PrivateSidebar'
 import { config } from '../../constants/Constants'
 import jwt_decode from "jwt-decode"
 import { dayOfWeek, dayOfWeekShort, daysBetweenDates, dateFromDate } from '../../util/helperfunctions'
-import { update, reset, updateDates } from './thoughtRecordsSlice'
+import { update, reset, updateDates, updatePage } from './thoughtRecordsSlice'
+import PaginationComponent from '../../components/PaginationComponent'
 
 
 import ThoughtRecordItem from '../../components/ThoughtRecordItem'
@@ -28,6 +29,9 @@ export default function ThoughtRecords() {
 
   const [selectedDateRange, setSelectedDateRange] = useState('Custom Date Range')
   const filterOptions = useSelector((state) => state.thoughtRecord)
+  const foPageCurrent = useSelector((state) => state.thoughtRecord.pageCurrent)
+  const foPagesCount = useSelector((state) => state.thoughtRecord.pagesCount)
+
   useEffect(() => {
     searchElement.current.value = filterOptions.search
     startDateElement.current.value = filterOptions.startDate
@@ -99,13 +103,13 @@ export default function ThoughtRecords() {
 
   const handleClearFilters = (e) => {
     e.preventDefault()
-    searchElement.current.value = ""
+    //searchElement.current.value = ""
     startDateElement.current.value = ""
     endDateElement.current.value = ""
     startTimeElement.current.value = ""
     endTimeElement.current.value = ""
 
-    dispatch(reset())
+    //dispatch(reset())
   }
 
   const [errors, setErrors] = useState()
@@ -141,13 +145,15 @@ export default function ThoughtRecords() {
     var endDateValue = filterOptions.endDate
     var startTimeValue = filterOptions.startTime
     var endTimeValue = filterOptions.endTime
+    var pageCurrent = filterOptions.pageCurrent - 1
 
     fetch(config.BASE_V2_URL + "/thought-records?" + new URLSearchParams({
       q: searchValue,
       sd: startDateValue,
       ed: endDateValue,
       st: startTimeValue,
-      et: endTimeValue
+      et: endTimeValue,
+      p: pageCurrent
     }), {
       headers: {
         "content-type": "application/json",
@@ -163,6 +169,7 @@ export default function ThoughtRecords() {
       })
     }).then(data => {
       setThoughtRecordObjList(data.content)
+      dispatch(updatePage({ pageCurrent: data.pageable.pageNumber + 1, pagesCount: data.totalPages }))
       setLoading(false)
     }).catch(err => {
       setErrors(err)
@@ -222,11 +229,60 @@ export default function ThoughtRecords() {
       })
     }).then(data => {
       setThoughtRecordObjList(data.content)
+      dispatch(updatePage({ pageCurrent: data.pageable.pageNumber + 1, pagesCount: data.totalPages }))
       setLoading(false)
     }).catch(err => {
       setErrors(err)
       setLoading(false)
     })
+  }
+
+  const getDifferentPage = (page) => {
+    setErrors(null)
+    setLoading(true)
+    setThoughtRecordObjList(null)
+
+    var searchValue = filterOptions.search
+    var startDateValue = filterOptions.startDate
+    var endDateValue = filterOptions.endDate
+    var startTimeValue = filterOptions.startTime
+    var endTimeValue = filterOptions.endTime
+
+    fetch(config.BASE_V2_URL + "/thought-records?" + new URLSearchParams({
+      q: searchValue,
+      sd: startDateValue,
+      ed: endDateValue,
+      st: startTimeValue,
+      et: endTimeValue,
+      p: page - 1
+    }), {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "GET"
+    }).then(res => {
+      if (res.status === 200) {
+        return res.json()
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).then(data => {
+      setThoughtRecordObjList(data.content)
+      dispatch(updatePage({ pageCurrent: data.pageable.pageNumber + 1, pagesCount: data.totalPages }))
+      setLoading(false)
+    }).catch(err => {
+      setErrors(err)
+      setLoading(false)
+    })
+
+  }
+
+  const setPageFunction = (page) => {
+    if (foPageCurrent != page) {
+      getDifferentPage(page)
+    }
   }
 
   const thoughtRecords = (
@@ -268,6 +324,7 @@ export default function ThoughtRecords() {
             <div className="input-group mb-3 card-box-mid">
               <input type="text" ref={searchElement} className="form-control" placeholder="Search meal and notes... " />
               {/*<button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm">fltr</button>*/}
+              <button className="btn btn-outline-secondary" type="button" onClick={() => { searchElement.current.value = '' }}>X</button>
               <button className="btn btn-primary" type="button" onClick={() => { setIsExpandedFilter(prevVal => !prevVal) }}>fltr</button>
               <button className="btn btn-primary" type="submit">Search</button>
             </div>
@@ -294,6 +351,12 @@ export default function ThoughtRecords() {
 
         </fieldset>
       </div>
+
+      <PaginationComponent
+        pagenum={foPageCurrent}
+        pagetotal={foPagesCount}
+        setpagefunction={(p) => setPageFunction(p)}
+      />
 
       {(loading) && (
         <div class="d-flex justify-content-center col-12 flex-grow-1">
@@ -327,10 +390,16 @@ export default function ThoughtRecords() {
       )
       }
 
+      <PaginationComponent
+        pagenum={foPageCurrent}
+        pagetotal={foPagesCount}
+        setpagefunction={(p) => setPageFunction(p)}
+      />
+
     </>
   )
 
-  
+
 
   return (
     <>
