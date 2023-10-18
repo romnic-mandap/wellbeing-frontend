@@ -96,7 +96,8 @@ export default function AfterMealNotes() {
       ed: endDateValue,
       st: startTimeValue,
       et: endTimeValue,
-      p: pageCurrent
+      p: pageCurrent,
+      s: config.AFTERMEALNOTES_PAGE_SIZE
     }), {
       headers: {
         "content-type": "application/json",
@@ -216,7 +217,8 @@ export default function AfterMealNotes() {
       sd: startDateValue,
       ed: endDateValue,
       st: startTimeValue,
-      et: endTimeValue
+      et: endTimeValue,
+      s: config.AFTERMEALNOTES_PAGE_SIZE
     }), {
       headers: {
         "content-type": "application/json",
@@ -257,7 +259,8 @@ export default function AfterMealNotes() {
       ed: endDateValue,
       st: startTimeValue,
       et: endTimeValue,
-      p: page - 1
+      p: page - 1,
+      s: config.AFTERMEALNOTES_PAGE_SIZE
     }), {
       headers: {
         "content-type": "application/json",

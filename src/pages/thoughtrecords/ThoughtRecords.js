@@ -153,7 +153,8 @@ export default function ThoughtRecords() {
       ed: endDateValue,
       st: startTimeValue,
       et: endTimeValue,
-      p: pageCurrent
+      p: pageCurrent,
+      s: config.THOUGHTRECORDS_PAGE_SIZE
     }), {
       headers: {
         "content-type": "application/json",
@@ -213,7 +214,8 @@ export default function ThoughtRecords() {
       sd: startDateValue,
       ed: endDateValue,
       st: startTimeValue,
-      et: endTimeValue
+      et: endTimeValue,
+      s: config.THOUGHTRECORDS_PAGE_SIZE
     }), {
       headers: {
         "content-type": "application/json",
@@ -254,7 +256,8 @@ export default function ThoughtRecords() {
       ed: endDateValue,
       st: startTimeValue,
       et: endTimeValue,
-      p: page - 1
+      p: page - 1,
+      s: config.THOUGHTRECORDS_PAGE_SIZE
     }), {
       headers: {
         "content-type": "application/json",

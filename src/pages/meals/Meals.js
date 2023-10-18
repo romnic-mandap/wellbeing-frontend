@@ -112,7 +112,8 @@ export default function Meals() {
       ed: endDateValue,
       st: startTimeValue,
       et: endTimeValue,
-      p: pageCurrent
+      p: pageCurrent,
+      s: config.MEALS_PAGE_SIZE
     }), {
       headers: {
         "content-type": "application/json",
@@ -250,7 +251,8 @@ export default function Meals() {
       sd: startDateValue,
       ed: endDateValue,
       st: startTimeValue,
-      et: endTimeValue
+      et: endTimeValue,
+      s: config.MEALS_PAGE_SIZE
     }), {
       headers: {
         "content-type": "application/json",
@@ -299,7 +301,8 @@ export default function Meals() {
       ed: endDateValue,
       st: startTimeValue,
       et: endTimeValue,
-      p: page - 1
+      p: page - 1,
+      s: config.MEALS_PAGE_SIZE
     }), {
       headers: {
         "content-type": "application/json",
