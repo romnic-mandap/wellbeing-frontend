@@ -7,6 +7,8 @@ import counterReducer from '../features/counter/counterSlice'
 import mealReducer from '../pages/meals/mealSlice'
 import afterMealNoteReducer from '../pages/aftermealnotes/afterMealNotesSlice'
 import thoughtRecordReducer from '../pages/thoughtrecords/thoughtRecordsSlice'
+import foodItemReducer from '../pages/fooditems/foodItemsSlice'
+import foodTableItemReducer from '../pages/foodtableitems/foodTableItemsSlice'
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +17,9 @@ export const store = configureStore({
     counter: counterReducer,
     meal: mealReducer,
     afterMealNote: afterMealNoteReducer,
-    thoughtRecord: thoughtRecordReducer
+    thoughtRecord: thoughtRecordReducer,
+    foodItem: foodItemReducer,
+    foodTableItem: foodTableItemReducer
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.

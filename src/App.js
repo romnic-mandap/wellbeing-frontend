@@ -10,6 +10,8 @@ import AfterMealNotes from './pages/aftermealnotes/AfterMealNotes'
 import ThoughtRecords from './pages/thoughtrecords/ThoughtRecords'
 import ThoughtRecordItemAdd from './pages/ThoughtRecordItemAdd'
 import ThoughtRecordItemEdit from './pages/ThoughtRecordItemEdit'
+import FoodItems from './pages/fooditems/FoodItems'
+import FoodTableItems from './pages/foodtableitems/FoodTableItems'
 
 export default function App() {
   return (
@@ -27,6 +29,10 @@ export default function App() {
       <Route path="/thought-records" element={<ThoughtRecords />} />
       <Route path="/thought-records/add" element={<ThoughtRecordItemAdd />} />
       <Route path="/thought-records/:id/edit" element={<ThoughtRecordItemEdit />} />
+
+      <Route path="/food-items" element={<FoodItems />} />
+
+      <Route path="/food-table-items" element={<FoodTableItems />} />
     </Routes>
   )
 }
