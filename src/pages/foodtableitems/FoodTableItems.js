@@ -44,14 +44,7 @@ export default function FoodTableItems() {
   const dispatch = useDispatch()
 
   const [foodTableItemObjList, setFoodTableItemObjList] = useState()
-  const [foodTableStatsObj, setFoodTableStatsObj] = useState({
-    "totalKcal": 0,
-    "totalCarbs": 0,
-    "totalFat": 0,
-    "totalProtein": 0,
-    "totalFiber": 0,
-    "totalSodium": 0
-  })
+  const [foodTableStatsObj, setFoodTableStatsObj] = useState()
   useEffect(() => {
     setErrors(null)
     setLoading(true)
@@ -174,12 +167,12 @@ export default function FoodTableItems() {
     })
 
     setFoodTableStatsObj({
-      "totalKcal": 0,
-      "totalCarbs": 0,
-      "totalFat": 0,
-      "totalProtein": 0,
-      "totalFiber": 0,
-      "totalSodium": 0
+      "totalKcal": null,
+      "totalCarbs": null,
+      "totalFat": null,
+      "totalProtein": null,
+      "totalFiber": null,
+      "totalSodium": null
     })
   }
 
