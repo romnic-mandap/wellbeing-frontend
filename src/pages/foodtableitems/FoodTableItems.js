@@ -15,6 +15,7 @@ import FoodTableStats from '../../components/FoodTableStats'
 import { update, reset, updatePage } from './foodTableItemsSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import PaginationComponent from '../../components/PaginationComponent'
+import toast, { Toaster } from 'react-hot-toast'
 
 export default function FoodTableItems() {
   const navigate = useNavigate()
@@ -43,7 +44,14 @@ export default function FoodTableItems() {
   const dispatch = useDispatch()
 
   const [foodTableItemObjList, setFoodTableItemObjList] = useState()
-  const [foodTableStatsObj, setFoodTableStatsObj] = useState()
+  const [foodTableStatsObj, setFoodTableStatsObj] = useState({
+    "totalKcal": 0,
+    "totalCarbs": 0,
+    "totalFat": 0,
+    "totalProtein": 0,
+    "totalFiber": 0,
+    "totalSodium": 0
+  })
   useEffect(() => {
     setErrors(null)
     setLoading(true)
@@ -106,6 +114,75 @@ export default function FoodTableItems() {
     }
   }
 
+  const setDeleteFunction = (id) => {
+    fetch(config.BASE_URL + "/food-table-items/" + id, {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "DELETE"
+    }).then(res => {
+      if (res.ok) {
+        setFoodTableItemObjList(prevItems => prevItems.filter(i => i.id !== id))
+        toast.success("Deleted food table item...")
+        return fetch(config.BASE_URL + "/food-table-items/stats", {
+          headers: {
+            "content-type": "application/json",
+            "authorization": "Bearer " + jwt
+          },
+          method: "Get"
+        }).then(res => {
+          if (res.status === 200) {
+            return res.json()
+          }
+          return res.json().then(data => {
+            throw data
+          })
+        }).then(data => {
+          setFoodTableStatsObj(data)
+        }).catch(err => {
+          setErrors(err)
+        })
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).catch(err => {
+      console.log(err)
+    })
+
+  }
+
+  const setDeleteAllFunction = () => {
+    fetch(config.BASE_URL + "/food-table-items", {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "DELETE"
+    }).then(res => {
+      if (res.ok) {
+        setFoodTableItemObjList(null)
+        toast.success("Deleted food table items...")
+        return
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).catch(err => {
+      console.log(err)
+    })
+
+    setFoodTableStatsObj({
+      "totalKcal": 0,
+      "totalCarbs": 0,
+      "totalFat": 0,
+      "totalProtein": 0,
+      "totalFiber": 0,
+      "totalSodium": 0
+    })
+  }
+
   const getDifferentPage = (page) => {
     setErrors(null)
     setLoading(true)
@@ -162,7 +239,7 @@ export default function FoodTableItems() {
     <div className="pt-3"></div>
 
     {!foodTableStatsObj ? null : (<>
-      <FoodTableStats foodTableStatsObj={foodTableStatsObj} />
+      <FoodTableStats foodTableStatsObj={foodTableStatsObj} setDeleteAllFunction={() => setDeleteAllFunction()} />
     </>)}
 
     <PaginationComponent
@@ -189,7 +266,7 @@ export default function FoodTableItems() {
 
     {!foodTableItemObjList ? null : (<>
       {foodTableItemObjList.map((ftio, index) => {
-        return <FoodTableItem foodTableItemObj={ftio} />
+        return <FoodTableItem foodTableItemObj={ftio} setDeleteFunction={(id) => setDeleteFunction(id)} />
       })}
 
     </>)}
@@ -213,6 +290,7 @@ export default function FoodTableItems() {
           </Col>
           <Col className="col-lg-9 offset-lg-3 col-md-12 offset-md-0">
             {foodTableItems}
+            <Toaster />
           </Col>
         </Row>
       </Container>

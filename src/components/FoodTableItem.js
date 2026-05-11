@@ -18,13 +18,17 @@ import Table from 'react-bootstrap/Table';
   "createdAt": "2026-04-22T16:44:14.343894"
 }
 */
-export default function FoodTableItem({foodTableItemObj}){
+export default function FoodTableItem({foodTableItemObj, setDeleteFunction}){
+  const handleDeleteClick = (id) => {
+    setDeleteFunction(id)
+  }
+
     return (<>
         <Table striped bordered hover size="sm">
         <tbody>
           <tr>
             <td className='col-9 fw-bold' colSpan={3}>{foodTableItemObj.foodName}</td>
-            <td className='col-3' colSpan={1}><button className="btn btn-primary w-100 p-0" type="button">Delete</button></td>
+            <td className='col-3' colSpan={1}><button className="btn btn-primary w-100 p-0" type="button" onClick={()=>handleDeleteClick(foodTableItemObj.id)}>Delete</button></td>
           </tr>
           <tr>
             <td className='col-3'>Kcal:</td>

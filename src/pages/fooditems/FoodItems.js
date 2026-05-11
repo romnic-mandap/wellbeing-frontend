@@ -14,10 +14,11 @@ import FoodItem from '../../components/FoodItem'
 import { update, reset, updatePage } from './foodItemsSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import PaginationComponent from '../../components/PaginationComponent'
+import toast, { Toaster } from 'react-hot-toast'
 
-export default function FoodItems(){
+export default function FoodItems() {
   const navigate = useNavigate()
-  
+
   const [errors, setErrors] = useState()
   const [loading, setLoading] = useState(false)
   const [jwt, setJwt] = useState()
@@ -46,7 +47,7 @@ export default function FoodItems(){
     setErrors(null)
     setLoading(true)
     setFoodItemObjList(null)
-     if (jwt === null || jwt === undefined) {
+    if (jwt === null || jwt === undefined) {
       setLoading(false)
       return
     }
@@ -65,7 +66,7 @@ export default function FoodItems(){
       })
     }).then(data => {
       setFoodItemObjList(data.content)
-      dispatch(updatePage({pageCurrent: data.pageable.pageNumber + 1, pagesCount: data.totalPages}))
+      dispatch(updatePage({ pageCurrent: data.pageable.pageNumber + 1, pagesCount: data.totalPages }))
       setLoading(false)
     }).catch(err => {
       setErrors(err)
@@ -80,80 +81,104 @@ export default function FoodItems(){
     }
   }
 
-    const getDifferentPage = (page) => {
-      setErrors(null)
-      setLoading(true)
-      setFoodItemObjList(null)
+  const setAddFunction = (id) => {
+    fetch(config.BASE_URL+"/food-table-items", {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "POST",
+      body: JSON.stringify({
+        "foodItemId": id,
+      })
+    }).then(res => {
+      if(res.ok){
+        return res.json()
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).then(data => {
+      toast.success("Added " + data.foodName + " to food table...")
+    }).catch(err => {
+      console.log(err)
+    })
+  }
 
-      fetch(config.BASE_V2_URL + "/food-items?" + new URLSearchParams({
-            p: page - 1,
-          }), {
-            headers: {
-              "content-type": "application/json",
-              "authorization": "Bearer " + jwt
-            },
-            method: "GET"
-          }).then(res => {
-            if (res.status === 200) {
-              return res.json()
-            }
-            return res.json().then(data => {
-              throw data
-            })
-          }).then(data => {
-            setFoodItemObjList(data.content)
-            dispatch(updatePage({ pageCurrent: data.pageable.pageNumber + 1, pagesCount: data.totalPages }))
-            setLoading(false)
-          }).catch(err => {
-            setErrors(err)
-            setLoading(false)
-          })
-    }
+  const getDifferentPage = (page) => {
+    setErrors(null)
+    setLoading(true)
+    setFoodItemObjList(null)
 
-    
-
-    const foodItems = (<>
-      <div className="pt-3"></div>
-
-     <PaginationComponent
-              pagenum={foPageCurrent}
-              pagetotal={foPagesCount}
-              setpagefunction={(p) => setPageFunction(p)}
-            />
+    fetch(config.BASE_V2_URL + "/food-items?" + new URLSearchParams({
+      p: page - 1,
+    }), {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "GET"
+    }).then(res => {
+      if (res.status === 200) {
+        return res.json()
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).then(data => {
+      setFoodItemObjList(data.content)
+      dispatch(updatePage({ pageCurrent: data.pageable.pageNumber + 1, pagesCount: data.totalPages }))
+      setLoading(false)
+    }).catch(err => {
+      setErrors(err)
+      setLoading(false)
+    })
+  }
 
 
-       {(loading) && (
-        <div class="d-flex justify-content-center col-12 flex-grow-1">
-          <div className="spinner-grow text-secondary">
-            <span class="visually-hidden">Loading...</span>
-          </div>
+
+  const foodItems = (<>
+    <div className="pt-3"></div>
+
+    <PaginationComponent
+      pagenum={foPageCurrent}
+      pagetotal={foPagesCount}
+      setpagefunction={(p) => setPageFunction(p)}
+    />
+
+
+    {(loading) && (
+      <div class="d-flex justify-content-center col-12 flex-grow-1">
+        <div className="spinner-grow text-secondary">
+          <span class="visually-hidden">Loading...</span>
         </div>
+      </div>
 
-      )}
+    )}
 
-      {(errors) && (
-        <div className="alert alert-danger">
-          {errors['error(s)']?.map(e => { return <p>{e}</p> })}
-        </div>
-      )}
+    {(errors) && (
+      <div className="alert alert-danger">
+        {errors['error(s)']?.map(e => { return <p>{e}</p> })}
+      </div>
+    )}
 
-      {!foodItemObjList ? null : (<>
-        {foodItemObjList.map((fio, index) => {
-          return <FoodItem foodItemObj={fio} />
-        })}
-      
-      </>)}
-      
-      <PaginationComponent
-              pagenum={foPageCurrent}
-              pagetotal={foPagesCount}
-              setpagefunction={(p) => setPageFunction(p)}
-            />
+    {!foodItemObjList ? null : (<>
+      {foodItemObjList.map((fio, index) => {
+        return <FoodItem foodItemObj={fio} setAddFunction={(id)=>setAddFunction(id)} />
+      })}
 
-      
-    </>)
+    </>)}
 
-    return (
+    <PaginationComponent
+      pagenum={foPageCurrent}
+      pagetotal={foPagesCount}
+      setpagefunction={(p) => setPageFunction(p)}
+    />
+
+
+  </>)
+
+  return (
     <>
       <PrivateNavbar active="fooditems" />
       <Container fluid>
@@ -163,6 +188,7 @@ export default function FoodItems(){
           </Col>
           <Col className="col-lg-9 offset-lg-3 col-md-12 offset-md-0">
             {foodItems}
+            <Toaster />
           </Col>
         </Row>
       </Container>
