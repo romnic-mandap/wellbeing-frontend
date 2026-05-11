@@ -325,7 +325,7 @@ export default function ThoughtRecords() {
             </div>
 
             <div className="input-group mb-3 card-box-mid">
-              <input type="text" ref={searchElement} className="form-control" placeholder="Search meal and notes... " />
+              <input type="text" ref={searchElement} className="form-control" placeholder="Search situations... " />
               {/*<button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm">fltr</button>*/}
               <button className="btn btn-outline-secondary" type="button" onClick={() => { searchElement.current.value = '' }}>X</button>
               <button className="btn btn-primary" type="button" onClick={() => { setIsExpandedFilter(prevVal => !prevVal) }}>fltr</button>
