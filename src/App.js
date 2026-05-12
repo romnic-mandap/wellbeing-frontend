@@ -8,6 +8,7 @@ import MealItemAdd from './pages/MealItemAdd'
 import MealItemEdit from './pages/MealItemEdit'
 import AfterMealNotes from './pages/aftermealnotes/AfterMealNotes'
 import ThoughtRecords from './pages/thoughtrecords/ThoughtRecords'
+import ThoughtMap from './pages/thoughtmap/ThoughtMap'
 import ThoughtRecordItemAdd from './pages/ThoughtRecordItemAdd'
 import ThoughtRecordItemEdit from './pages/ThoughtRecordItemEdit'
 import FoodItems from './pages/fooditems/FoodItems'
@@ -29,6 +30,7 @@ export default function App() {
       <Route path="/thought-records" element={<ThoughtRecords />} />
       <Route path="/thought-records/add" element={<ThoughtRecordItemAdd />} />
       <Route path="/thought-records/:id/edit" element={<ThoughtRecordItemEdit />} />
+      <Route path="/thought-map" element={<ThoughtMap />} />
 
       <Route path="/food-items" element={<FoodItems />} />
 
