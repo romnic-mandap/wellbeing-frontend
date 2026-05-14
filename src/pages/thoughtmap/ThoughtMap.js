@@ -12,6 +12,7 @@ import { config } from '../../constants/Constants'
 import jwt_decode from "jwt-decode"
 import { useSelector, useDispatch } from 'react-redux'
 import toast, { Toaster } from 'react-hot-toast'
+import { yearMonth } from '../../util/helperfunctions'
 
 export default function ThoughtMap() {
   const navigate = useNavigate()
@@ -35,9 +36,134 @@ export default function ThoughtMap() {
     }
   }, [])
 
+  const [moodScoreList, setMoodScoreList] = useState()
+  useEffect(() => {
+    setErrors(null)
+    setLoading(true)
+    setMoodScoreList(null)
+    if (jwt === null || jwt === undefined) {
+      setLoading(false)
+      return
+    }
+
+    fetch(config.BASE_URL + "/thought-records/month-mood-scores-list?" + new URLSearchParams({
+      d: yearMonth()
+    }), {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "Get"
+    }).then(res => {
+      if (res.status === 200) {
+        return res.json()
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).then(data => {
+      setMoodScoreList(data)
+      console.log(data)
+      setLoading(false)
+    }).catch(err => {
+      setErrors(err)
+      setLoading(false)
+    })
+  }, [jwt])
+
+  const getColorClass = (score) => {
+    switch (true) {
+      case score == -9000:
+        return "card border-primary"
+      case (score < 1.0 && score > -1.0):
+        return "card border-primary bg-light"
+      case (score <= -3.0):
+        return "card border-primary bg-danger"
+      case (score <= -1.0):
+        return "card border-primary bg-secondary"
+      case (score >= 3.0):
+        return "card border-primary bg-primary"
+      case (score >= 1.0):
+        return "card border-primary bg-info"
+    }
+  }
 
   const thoughtMap = (<>
     <div className="pt-3"></div>
+
+    <div className="card">
+      <div className="card-body text-center">
+        {yearMonth()}
+      </div>
+    </div>
+    <Table className="text-end" bordered size="sm">
+      <tbody>
+        <tr>
+          <td className="col-1 text-center">S</td>
+          <td className="col-1 text-center">M</td>
+          <td className="col-1 text-center">T</td>
+          <td className="col-1 text-center">W</td>
+          <td className="col-1 text-center">T</td>
+          <td className="col-1 text-center">F</td>
+          <td className="col-1 text-center">S</td>
+        </tr>
+        <tr>
+          {(moodScoreList) && <>
+            {
+              moodScoreList.slice(0, 7).map((ms, index) => {
+                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
+              })
+            }
+          </>}
+        </tr>
+        <tr>
+          {(moodScoreList) && <>
+            {
+              moodScoreList.slice(7, 14).map((ms, index) => {
+                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
+              })
+            }
+          </>}
+        </tr>
+        <tr>
+          {(moodScoreList) && <>
+            {
+              moodScoreList.slice(14, 21).map((ms, index) => {
+                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
+              })
+            }
+          </>}
+        </tr>
+        <tr>
+          {(moodScoreList) && <>
+            {
+              moodScoreList.slice(21, 28).map((ms, index) => {
+                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
+              })
+            }
+          </>}
+        </tr>
+        <tr>
+          {(moodScoreList) && <>
+            {
+              moodScoreList.slice(28, 35).map((ms, index) => {
+                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
+              })
+            }
+          </>}
+        </tr>
+        <tr>
+          {(moodScoreList) && <>
+            {
+              moodScoreList.slice(35, 42).map((ms, index) => {
+                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
+              })
+            }
+          </>}
+        </tr>
+
+      </tbody>
+    </Table>
 
     {(loading) && (
       <div class="d-flex justify-content-center col-12 flex-grow-1">
