@@ -77,11 +77,11 @@ export default function ThoughtMap() {
         return "card border-primary"
       case (score < 1.0 && score > -1.0):
         return "card border-primary bg-light"
-      case (score <= -3.0):
+      case (score <= -7.5):
         return "card border-primary bg-danger"
       case (score <= -1.0):
         return "card border-primary bg-secondary"
-      case (score >= 3.0):
+      case (score >= 7.5):
         return "card border-primary bg-primary"
       case (score >= 1.0):
         return "card border-primary bg-info"
