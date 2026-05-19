@@ -27,5 +27,5 @@ const prod = {
   THOUGHTRECORDS_PAGE_SIZE: process.env.REACT_APP_THOUGHTRECORDS_PAGE_SIZE
 }
 
-export const config = process.env.NODE_ENV === 'development' ? dev : prod
+export const config = process.env.REACT_APP_NODE_ENV === 'development' ? dev : prod
 

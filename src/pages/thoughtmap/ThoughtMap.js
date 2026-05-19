@@ -74,17 +74,17 @@ export default function ThoughtMap() {
   const getColorClass = (score) => {
     switch (true) {
       case score == -9000:
-        return "card border-primary"
+        return "card border-primary m-1"
       case (score < 1.0 && score > -1.0):
-        return "card border-primary bg-light"
+        return "card border-primary m-1 bg-light"
       case (score <= -7.5):
-        return "card border-primary bg-danger"
+        return "card border-primary m-1 bg-danger"
       case (score <= -1.0):
-        return "card border-primary bg-secondary"
+        return "card border-primary m-1 bg-secondary"
       case (score >= 7.5):
-        return "card border-primary bg-primary"
+        return "card border-primary m-1 bg-primary"
       case (score >= 1.0):
-        return "card border-primary bg-info"
+        return "card border-primary m-1 bg-info"
     }
   }
 
