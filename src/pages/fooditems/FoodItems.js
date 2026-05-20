@@ -148,9 +148,9 @@ export default function FoodItems() {
 
 
     {(loading) && (
-      <div class="d-flex justify-content-center col-12 flex-grow-1">
+      <div className="d-flex justify-content-center col-12 flex-grow-1">
         <div className="spinner-grow text-secondary">
-          <span class="visually-hidden">Loading...</span>
+          <span className="visually-hidden">Loading...</span>
         </div>
       </div>
 

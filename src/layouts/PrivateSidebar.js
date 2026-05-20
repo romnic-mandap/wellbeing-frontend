@@ -17,7 +17,7 @@ export default function PrivateSidebar({ active = "meals" }) {
           <li className={classNames("list-group-item", { "list-group-item-primary": active == "thoughtmap" })} onClick={() => { navigate("/thought-map") }}>Thought map</li>
           <li className={classNames("list-group-item", { "list-group-item-primary": active == "fooditems" })} onClick={() => { navigate("/food-items") }}>Food items</li>
           <li className={classNames("list-group-item", { "list-group-item-primary": active == "foodtableitems" })} onClick={() => { navigate("/food-table-items") }}>Food table items</li>
-          <li className="list-group-item disabled">Coming soon...</li>
+          <li className={classNames("list-group-item", { "list-group-item-primary": active == "todos" })} onClick={() => { navigate("/to-dos") }}>To-do list</li>
           <li className="list-group-item disabled">Coming soon...</li>
         </ul>
 

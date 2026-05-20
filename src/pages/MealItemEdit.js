@@ -220,9 +220,9 @@ export default function MealItemEdit() {
       <PrivateNavbar />
 
       <nav className='m-2'>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><Link to="/meals">Meals</Link></li>
-          <li class="breadcrumb-item active">Meal Item</li>
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item"><Link to="/meals">Meals</Link></li>
+          <li className="breadcrumb-item active">Meal Item</li>
         </ol>
       </nav>
 

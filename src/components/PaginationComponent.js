@@ -64,7 +64,7 @@ export default function PaginationComponent({pagenum, pagetotal, setpagefunction
       )
     }
 
-    console.log(pagenum+' '+pagetotal)
+    // console.log(pagenum+' '+pagetotal)
  
     return (<ul className="pagination pagination-sm justify-content-center">
         <li className={classNames("page-item", {"disabled": ((pagenum <= 1))})}><button className="page-link" onClick={()=>handlePageClick(parseInt(pagenum) - 1)}><span>&laquo;</span></button></li>

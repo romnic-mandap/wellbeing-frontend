@@ -119,9 +119,9 @@ export default function ThoughtRecordItemEdit() {
     <>
       <PrivateNavbar active="thoughtrecords" />
       <nav className='m-2'>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><Link to="/thought-records">Thought Records</Link></li>
-          <li class="breadcrumb-item active">Thought Record Item</li>
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item"><Link to="/thought-records">Thought Records</Link></li>
+          <li className="breadcrumb-item active">Thought Record Item</li>
         </ol>
       </nav>
 
