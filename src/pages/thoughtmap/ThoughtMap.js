@@ -74,18 +74,30 @@ export default function ThoughtMap() {
   const getColorClass = (score) => {
     switch (true) {
       case score == -9000:
-        return "card border-primary m-1"
+        return "card m-0"
+      case score == 0:
+        return "card border-secondary m-0"
       case (score < 1.0 && score > -1.0):
-        return "card border-primary m-1 bg-light"
+        return "card border-primary m-0 bg-light"
       case (score <= -7.5):
-        return "card border-primary m-1 bg-danger"
+        return "card border-primary m-0 bg-danger"
       case (score <= -1.0):
-        return "card border-primary m-1 bg-secondary"
+        return "card border-primary m-0 bg-secondary"
       case (score >= 7.5):
-        return "card border-primary m-1 bg-primary"
+        return "card border-primary m-0 bg-primary"
       case (score >= 1.0):
-        return "card border-primary m-1 bg-info"
+        return "card border-primary m-0 bg-info"
     }
+  }
+
+  const getMonthDayScore = (ms) => {
+    switch (true) {
+      case ms == -9000:
+        return ""
+      default:
+        return Math.round(ms)
+    }
+    
   }
 
   const thoughtMap = (<>
@@ -111,7 +123,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(0, 7).map((ms, index) => {
-                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
+                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
               })
             }
           </>}
@@ -120,7 +132,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(7, 14).map((ms, index) => {
-                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
+                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
               })
             }
           </>}
@@ -129,7 +141,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(14, 21).map((ms, index) => {
-                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
+                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
               })
             }
           </>}
@@ -138,7 +150,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(21, 28).map((ms, index) => {
-                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
+                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
               })
             }
           </>}
@@ -147,7 +159,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(28, 35).map((ms, index) => {
-                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
+                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
               })
             }
           </>}
@@ -156,7 +168,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(35, 42).map((ms, index) => {
-                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
+                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
               })
             }
           </>}
