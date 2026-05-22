@@ -7,6 +7,7 @@ import counterReducer from '../features/counter/counterSlice'
 import mealReducer from '../pages/meals/mealSlice'
 import afterMealNoteReducer from '../pages/aftermealnotes/afterMealNotesSlice'
 import thoughtRecordReducer from '../pages/thoughtrecords/thoughtRecordsSlice'
+import thoughtMapReducer from '../pages/thoughtmap/thoughtMapSlice'
 import foodItemReducer from '../pages/fooditems/foodItemsSlice'
 import foodTableItemReducer from '../pages/foodtableitems/foodTableItemsSlice'
 
@@ -18,6 +19,7 @@ export const store = configureStore({
     meal: mealReducer,
     afterMealNote: afterMealNoteReducer,
     thoughtRecord: thoughtRecordReducer,
+    thoughtMap: thoughtMapReducer,
     foodItem: foodItemReducer,
     foodTableItem: foodTableItemReducer
   },

@@ -12,7 +12,10 @@ import { config } from '../../constants/Constants'
 import jwt_decode from "jwt-decode"
 import { useSelector, useDispatch } from 'react-redux'
 import toast, { Toaster } from 'react-hot-toast'
-import { yearMonth } from '../../util/helperfunctions'
+import { yearMonth, yearMonthDay } from '../../util/helperfunctions'
+import { update, reset, updateDates, updatePage } from './thoughtMapSlice'
+import PaginationComponent from '../../components/PaginationComponent'
+import ThoughtMapThoughtRecordItem from '../../components/ThoughtMapThoughtRecordItem'
 
 export default function ThoughtMap() {
   const navigate = useNavigate()
@@ -97,7 +100,60 @@ export default function ThoughtMap() {
       default:
         return Math.round(ms)
     }
-    
+
+  }
+
+  
+  const foPageCurrent = useSelector((state) => state.thoughtMap.pageCurrent)
+  const foPagesCount = useSelector((state) => state.thoughtMap.pagesCount)
+  const dispatch = useDispatch()
+  const [thoughtRecordObjList, setThoughtRecordObjList] = useState()
+  const handleOnClick = (ms, index) => {
+    var skips = 0
+    for (let i = 0; i < 42; i++)
+      if (moodScoreList[i] == -9000)
+        skips++
+      else
+        break
+
+    if (ms === -9000) return
+    var day = index - skips + 1
+
+    setErrors(null)
+    setLoading(true)
+    if (jwt === null || jwt === undefined) {
+      setLoading(false)
+      return
+    }
+
+    var startDateValue = yearMonthDay(day)
+    var endDateValue = yearMonthDay(day)
+
+    fetch(config.BASE_V2_URL + "/thought-records?" + new URLSearchParams({
+      sd: startDateValue,
+      ed: endDateValue,
+      s: 24
+    }), {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "GET"
+    }).then(res => {
+      if (res.status === 200) {
+        return res.json()
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).then(data => {
+      setThoughtRecordObjList(data.content)
+      dispatch(updatePage({ pageCurrent: data.pageable.pageNumber + 1, pagesCount: data.totalPages }))
+      setLoading(false)
+    }).catch(err => {
+      setErrors(err)
+      setLoading(false)
+    })
   }
 
   const thoughtMap = (<>
@@ -123,7 +179,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(0, 7).map((ms, index) => {
-                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
+                return <td className="col-1" onClick={() => handleOnClick(ms, index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
               })
             }
           </>}
@@ -132,7 +188,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(7, 14).map((ms, index) => {
-                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
+                return <td className="col-1" onClick={() => handleOnClick(ms, 7 + index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
               })
             }
           </>}
@@ -141,7 +197,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(14, 21).map((ms, index) => {
-                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
+                return <td className="col-1" onClick={() => handleOnClick(ms, 14 + index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
               })
             }
           </>}
@@ -150,7 +206,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(21, 28).map((ms, index) => {
-                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
+                return <td className="col-1" onClick={() => handleOnClick(ms, 21 + index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
               })
             }
           </>}
@@ -159,7 +215,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(28, 35).map((ms, index) => {
-                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
+                return <td className="col-1" onClick={() => handleOnClick(ms, 28 + index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
               })
             }
           </>}
@@ -168,7 +224,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(35, 42).map((ms, index) => {
-                return <td className="col-1"><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
+                return <td className="col-1" onClick={() => handleOnClick(ms, 35 + index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
               })
             }
           </>}
@@ -191,6 +247,23 @@ export default function ThoughtMap() {
         {errors['error(s)']?.map(e => { return <p>{e}</p> })}
       </div>
     )}
+
+    {!thoughtRecordObjList ? null : (
+      <>
+        {
+          thoughtRecordObjList.map((tro, index) => {
+            if (index > 0 && tro.date !== thoughtRecordObjList[index - 1].date) {
+              return <><hr className="hr hrc" /><ThoughtMapThoughtRecordItem thoughtRecordObj={tro} /></>
+            } else {
+              return <ThoughtMapThoughtRecordItem thoughtRecordObj={tro} />
+            }
+
+          }
+          )
+        }
+      </>
+    )
+    }
 
   </>)
 

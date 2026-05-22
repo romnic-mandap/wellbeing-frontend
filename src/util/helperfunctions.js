@@ -10,6 +10,16 @@ export function compareByIdDesc(a, b) {
     return 0;
 }
 
+export function yearMonthDay(day){
+    {/* yyyy-mm-dd */ }
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(day).padStart(2,'0');
+    const formattedDate = `${yyyy}-${mm}-${dd}`;
+    return formattedDate;
+}
+
 export function yearMonth() {
     {/* yyyy-mm */ }
     const today = new Date();
