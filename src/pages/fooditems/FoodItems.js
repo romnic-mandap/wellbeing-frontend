@@ -22,6 +22,7 @@ export default function FoodItems() {
   const [errors, setErrors] = useState()
   const [loading, setLoading] = useState(false)
   const [jwt, setJwt] = useState()
+  const [isAdmin, setIsAdmin] = useState(false)
   useEffect(() => {
     const jwt = JSON.parse(localStorage.getItem(config.WELLBEINGv1_JWT))
     if (jwt) {
@@ -31,6 +32,9 @@ export default function FoodItems() {
         localStorage.setItem(config.WELLBEINGv1_JWT, null)
         navigate("/signin")
       } else {
+        if(decodedJwt.rle == "ROLE_ADMIN"){
+          setIsAdmin(true)
+        }
         setJwt(jwt)
       }
     } else {
@@ -139,6 +143,7 @@ export default function FoodItems() {
 
   const foodItems = (<>
     <div className="pt-3"></div>
+    {(isAdmin) ? <Link to="/food-items/add">[ADMIN] Add Food Item</Link> : null }
 
     <PaginationComponent
       pagenum={foPageCurrent}

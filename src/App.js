@@ -14,6 +14,7 @@ import ThoughtRecordItemEdit from './pages/ThoughtRecordItemEdit'
 import FoodItems from './pages/fooditems/FoodItems'
 import FoodTableItems from './pages/foodtableitems/FoodTableItems'
 import ToDo from './pages/todo/ToDo'
+import FoodItemAdd from './pages/FoodItemAdd'
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
       <Route path="/thought-map" element={<ThoughtMap />} />
 
       <Route path="/food-items" element={<FoodItems />} />
+      <Route path="/food-items/add" element={<FoodItemAdd />} />
 
       <Route path="/food-table-items" element={<FoodTableItems />} />
 
