@@ -179,7 +179,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(0, 7).map((ms, index) => {
-                return <td className="col-1" onClick={() => handleOnClick(ms, index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
+                return <td className="col-1" onClick={() => handleOnClick(ms, index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
               })
             }
           </>}
@@ -188,7 +188,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(7, 14).map((ms, index) => {
-                return <td className="col-1" onClick={() => handleOnClick(ms, 7 + index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
+                return <td className="col-1" onClick={() => handleOnClick(ms, 7 + index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
               })
             }
           </>}
@@ -197,7 +197,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(14, 21).map((ms, index) => {
-                return <td className="col-1" onClick={() => handleOnClick(ms, 14 + index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
+                return <td className="col-1" onClick={() => handleOnClick(ms, 14 + index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
               })
             }
           </>}
@@ -206,7 +206,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(21, 28).map((ms, index) => {
-                return <td className="col-1" onClick={() => handleOnClick(ms, 21 + index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
+                return <td className="col-1" onClick={() => handleOnClick(ms, 21 + index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
               })
             }
           </>}
@@ -215,7 +215,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(28, 35).map((ms, index) => {
-                return <td className="col-1" onClick={() => handleOnClick(ms, 28 + index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
+                return <td className="col-1" onClick={() => handleOnClick(ms, 28 + index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
               })
             }
           </>}
@@ -224,7 +224,7 @@ export default function ThoughtMap() {
           {(moodScoreList) && <>
             {
               moodScoreList.slice(35, 42).map((ms, index) => {
-                return <td className="col-1" onClick={() => handleOnClick(ms, 35 + index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body">{getMonthDayScore(ms)}</div></div></td>
+                return <td className="col-1" onClick={() => handleOnClick(ms, 35 + index)}><div className={getColorClass(ms)} style={{ height: 48 + 'px' }}><div className="card-body"></div></div></td>
               })
             }
           </>}
