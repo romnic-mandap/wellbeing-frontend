@@ -39,6 +39,7 @@ export default function ThoughtMap() {
     }
   }, [])
 
+  
   const [moodScoreList, setMoodScoreList] = useState()
   useEffect(() => {
     setErrors(null)
@@ -103,11 +104,12 @@ export default function ThoughtMap() {
 
   }
 
-  
+
   const foPageCurrent = useSelector((state) => state.thoughtMap.pageCurrent)
   const foPagesCount = useSelector((state) => state.thoughtMap.pagesCount)
   const dispatch = useDispatch()
   const [thoughtRecordObjList, setThoughtRecordObjList] = useState()
+  
   const handleOnClick = (ms, index) => {
     var skips = 0
     for (let i = 0; i < 42; i++)
@@ -161,10 +163,14 @@ export default function ThoughtMap() {
       <p className="fs-3">Mood Map</p>
     </div>
 
-    
+
     <div className="card">
-      <div className="card-body text-center">
-        {yearMonth()}
+      <div className="card-box">
+        <div className="input-group mb-2">
+          <button className="btn btn-primary" type="button">Prev</button>
+          <span className="flex-grow-1 d-flex align-items-center justify-content-center">{yearMonth()}</span>
+          <button className="btn btn-primary" type="button">Next</button>
+        </div>
       </div>
     </div>
     <Table className="text-end" bordered size="sm">
