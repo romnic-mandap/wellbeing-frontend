@@ -293,6 +293,9 @@ export default function AfterMealNotes() {
 
   const afterMealNotes = (
     <>
+      <div className="pt-3">
+        <p className="fs-3">After Meal Notes</p>
+      </div>
       <div className="card">
         <div className="card-header" />
 

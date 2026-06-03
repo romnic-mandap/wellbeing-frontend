@@ -229,7 +229,9 @@ export default function FoodTableItems() {
   }
 
   const foodTableItems = (<>
-    <div className="pt-3"></div>
+    <div className="pt-3">
+      <p className="fs-3">Food Table Items</p>
+    </div>
 
     {!foodTableStatsObj ? null : (<>
       <FoodTableStats foodTableStatsObj={foodTableStatsObj} setDeleteAllFunction={() => setDeleteAllFunction()} />

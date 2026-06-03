@@ -291,6 +291,7 @@ export default function ThoughtRecords() {
   const thoughtRecords = (
     <>
       <Link to="/thought-records/add">Add Thought Record Item</Link>
+      <p className="fs-3">Thought Records</p>
 
       <div className="card">
         <div className="card-header" />

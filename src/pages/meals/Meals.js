@@ -350,6 +350,7 @@ export default function Meals() {
           <Col className="col-lg-9 offset-lg-3 col-md-12 offset-md-0">
 
             <Link to="/meals/add">Add Meal Item</Link>
+            <p className="fs-3">Meals</p>
 
             <div className="card">
               <div className="card-header" />

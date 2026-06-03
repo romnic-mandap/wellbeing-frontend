@@ -29,11 +29,10 @@ export default function Home() {
 
   return (
     <>
-      {navigate("/meals")}
+      {navigate("/mood-map")}
       <PrivateNavbar />
       <div>Home {jwt}</div>
-      <Link to="/meals">Meals</Link>
-      <Counter />
+      <Link to="/mood-map">Mood map</Link>
     </>
     
   )

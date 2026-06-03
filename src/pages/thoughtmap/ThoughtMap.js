@@ -157,8 +157,11 @@ export default function ThoughtMap() {
   }
 
   const thoughtMap = (<>
-    <div className="pt-3"></div>
+    <div className="pt-3">
+      <p className="fs-3">Mood Map</p>
+    </div>
 
+    
     <div className="card">
       <div className="card-body text-center">
         {yearMonth()}
@@ -269,11 +272,11 @@ export default function ThoughtMap() {
 
   return (
     <>
-      <PrivateNavbar active="thoughtmap" />
+      <PrivateNavbar active="moodmap" />
       <Container fluid>
         <Row>
           <Col lg="3" className="border d-none d-lg-block bg-light position-fixed p-0">
-            <PrivateSidebar active="thoughtmap" />
+            <PrivateSidebar active="moodmap" />
           </Col>
           <Col className="col-lg-9 offset-lg-3 col-md-12 offset-md-0">
             {thoughtMap}

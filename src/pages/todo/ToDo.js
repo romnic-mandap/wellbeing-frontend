@@ -147,7 +147,7 @@ export default function ToDo() {
     }).then(res => {
       if (res.ok) {
         //setItems(items.map(a => (a.id === 2 ? {...a, data: "c"} : a))
-        setToDoList(toDoList.map(a => (a.id === id ? {...a, isDone: !isDone} : a)))
+        setToDoList(toDoList.map(a => (a.id === id ? { ...a, isDone: !isDone } : a)))
         toast.success("Updated to-do...")
         return
       }
@@ -161,6 +161,9 @@ export default function ToDo() {
 
   const todos = (
     <>
+      <div className="pt-3">
+        <p className="fs-3">To-do List</p>
+      </div>
       <div className="card">
         <div className="card-header" />
         <fieldset disabled={loading}>

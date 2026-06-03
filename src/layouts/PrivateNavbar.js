@@ -55,7 +55,6 @@ export default function PrivateNavbar({ active = "meals" }) {
           </Button>
           <Navbar.Brand className="navbar-brand sidebar-brand flex-grow-1">
             <Link to="/" id="navheadertext">Wellbeing</Link>
-            <span>_-_{active}</span>
           </Navbar.Brand>
 
           <form className="d-flex" onSubmit={handleSubmit}>

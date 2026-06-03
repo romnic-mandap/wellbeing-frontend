@@ -32,7 +32,7 @@ export default function FoodItems() {
         localStorage.setItem(config.WELLBEINGv1_JWT, null)
         navigate("/signin")
       } else {
-        if(decodedJwt.rle == "ROLE_ADMIN"){
+        if (decodedJwt.rle == "ROLE_ADMIN") {
           setIsAdmin(true)
         }
         setJwt(jwt)
@@ -86,7 +86,7 @@ export default function FoodItems() {
   }
 
   const setAddFunction = (id) => {
-    fetch(config.BASE_URL+"/food-table-items", {
+    fetch(config.BASE_URL + "/food-table-items", {
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer " + jwt
@@ -96,7 +96,7 @@ export default function FoodItems() {
         "foodItemId": id,
       })
     }).then(res => {
-      if(res.ok){
+      if (res.ok) {
         return res.json()
       }
       return res.json().then(data => {
@@ -142,8 +142,11 @@ export default function FoodItems() {
 
 
   const foodItems = (<>
-    <div className="pt-3"></div>
-    {(isAdmin) ? <Link to="/food-items/add">[ADMIN] Add Food Item</Link> : null }
+    {(isAdmin) ? <Link to="/food-items/add">[ADMIN] Add Food Item</Link> : null}
+    <div className="pt-3">
+      <p className="fs-3">Food Items</p>
+    </div>
+
 
     <PaginationComponent
       pagenum={foPageCurrent}
@@ -169,7 +172,7 @@ export default function FoodItems() {
 
     {!foodItemObjList ? null : (<>
       {foodItemObjList.map((fio, index) => {
-        return <FoodItem foodItemObj={fio} setAddFunction={(id)=>setAddFunction(id)} />
+        return <FoodItem foodItemObj={fio} setAddFunction={(id) => setAddFunction(id)} />
       })}
 
     </>)}
