@@ -12,13 +12,55 @@ import { config } from '../../constants/Constants'
 import jwt_decode from "jwt-decode"
 import { useSelector, useDispatch } from 'react-redux'
 import toast, { Toaster } from 'react-hot-toast'
-import { yearMonth, yearMonthDay } from '../../util/helperfunctions'
+import { yearMonth, yearMonthDay, incrementYearMonth, decrementYearMonth, yearMonthPlusDay } from '../../util/helperfunctions'
 import { update, reset, updateDates, updatePage } from './thoughtMapSlice'
 import PaginationComponent from '../../components/PaginationComponent'
 import ThoughtMapThoughtRecordItem from '../../components/ThoughtMapThoughtRecordItem'
 
 export default function ThoughtMap() {
   const navigate = useNavigate()
+
+  const moodHashMap = new Map()
+  moodHashMap.set("AFRAID", -1)
+  moodHashMap.set("ANGRY", -3)
+  moodHashMap.set("ANXIOUS", -1)
+  moodHashMap.set("ASHAMED", -3)
+  moodHashMap.set("CHEERFUL", 5)
+  moodHashMap.set("CONTENT", 3)
+  moodHashMap.set("DEPRESSED", -3)
+  moodHashMap.set("DISAPPOINTED", -3)
+  moodHashMap.set("DISGUSTED", -3)
+  moodHashMap.set("GRATEFUL", 3)
+  moodHashMap.set("EAGER", 1)
+  moodHashMap.set("EMBARRASSED", -1)
+  moodHashMap.set("ENRAGED", -5)
+  moodHashMap.set("EXCITED", 5)
+  moodHashMap.set("FRIGHTENED", -3)
+  moodHashMap.set("FRUSTRATED", -3)
+  moodHashMap.set("GRIEF", -5)
+  moodHashMap.set("GUILTY", -3)
+  moodHashMap.set("HAPPY", 3)
+  moodHashMap.set("HUMILIATED", -5)
+  moodHashMap.set("HURT", -1)
+  moodHashMap.set("INSECURE", -1)
+  moodHashMap.set("IRRITATED", -1)
+  moodHashMap.set("LOVING", 5)
+  moodHashMap.set("MAD", -3)
+  moodHashMap.set("NERVOUS", -1)
+  moodHashMap.set("PANIC", -5)
+  moodHashMap.set("PROUD", 3)
+  moodHashMap.set("SAD", -1)
+  moodHashMap.set("SCARED", -3)
+  const getMoodBadgeColorClass = (mood) => {
+    switch (true) {
+      case moodHashMap.get(mood) > 0:
+        return "badge rounded-pill bg-primary me-1"
+      case moodHashMap.get(mood) < 0:
+        return "badge rounded-pill bg-secondary me-1"
+    }
+  }
+
+
 
   const [errors, setErrors] = useState()
   const [loading, setLoading] = useState(false)
@@ -39,11 +81,64 @@ export default function ThoughtMap() {
     }
   }, [])
 
-  
-  const [moodScoreList, setMoodScoreList] = useState()
+  const [selectedYearMonth, setSelectedYearMonth] = useState()  // yyyy-mm
   useEffect(() => {
+    setSelectedYearMonth(yearMonth())
+  }, [])
+  const incrementSelectedYearMonth = () => {
+    console.log(incrementYearMonth(selectedYearMonth))
+    setSelectedYearMonth(incrementYearMonth(selectedYearMonth))
+  }
+  const decrementSelectedYearMonth = () => {
+    console.log(decrementYearMonth(selectedYearMonth))
+    setSelectedYearMonth(decrementYearMonth(selectedYearMonth))
+  }
+
+  const [monthMoodsList, setMonthMoodsList] = useState()
+  useEffect(() => {
+    if (selectedYearMonth === null) {
+      return
+    }
     setErrors(null)
     setLoading(true)
+    if (jwt === null || jwt === undefined) {
+      setLoading(false)
+      return
+    }
+
+    fetch(config.BASE_URL + "/thought-records/month-moods?" + new URLSearchParams({
+      d: selectedYearMonth
+    }), {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "Get"
+    }).then(res => {
+      if (res.status === 200) {
+        return res.json()
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).then(data => {
+      setMonthMoodsList(data)
+      console.log(data)
+      setLoading(false)
+    }).catch(err => {
+      setErrors(err)
+      setLoading(false)
+    })
+  }, [selectedYearMonth])
+
+  const [moodScoreList, setMoodScoreList] = useState()
+  useEffect(() => {
+    if (selectedYearMonth === null) {
+      return
+    }
+    setErrors(null)
+    setLoading(true)
+    setThoughtRecordObjList(null)
     setMoodScoreList(null)
     if (jwt === null || jwt === undefined) {
       setLoading(false)
@@ -51,7 +146,7 @@ export default function ThoughtMap() {
     }
 
     fetch(config.BASE_URL + "/thought-records/month-mood-scores-list?" + new URLSearchParams({
-      d: yearMonth()
+      d: selectedYearMonth
     }), {
       headers: {
         "content-type": "application/json",
@@ -73,7 +168,7 @@ export default function ThoughtMap() {
       setErrors(err)
       setLoading(false)
     })
-  }, [jwt])
+  }, [selectedYearMonth])
 
   const getColorClass = (score) => {
     switch (true) {
@@ -109,7 +204,40 @@ export default function ThoughtMap() {
   const foPagesCount = useSelector((state) => state.thoughtMap.pagesCount)
   const dispatch = useDispatch()
   const [thoughtRecordObjList, setThoughtRecordObjList] = useState()
-  
+
+  const handleMonthMoodOnClick = (mood) => {
+    setErrors(null)
+    setLoading(true)
+    if (jwt === null || jwt === undefined) {
+      setLoading(false)
+      return
+    }
+
+    fetch(config.BASE_URL + "/thought-records/month-moods-list?" + new URLSearchParams({
+      d: selectedYearMonth,
+      m: mood
+    }), {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "GET"
+    }).then(res => {
+      if (res.status === 200) {
+        return res.json()
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).then(data => {
+      setThoughtRecordObjList(data)
+      setLoading(false)
+    }).catch(err => {
+      setErrors(err)
+      setLoading(false)
+    })
+  }
+
   const handleOnClick = (ms, index) => {
     var skips = 0
     for (let i = 0; i < 42; i++)
@@ -128,8 +256,8 @@ export default function ThoughtMap() {
       return
     }
 
-    var startDateValue = yearMonthDay(day)
-    var endDateValue = yearMonthDay(day)
+    var startDateValue = yearMonthPlusDay(selectedYearMonth, day)
+    var endDateValue = yearMonthPlusDay(selectedYearMonth, day)
 
     fetch(config.BASE_V2_URL + "/thought-records?" + new URLSearchParams({
       sd: startDateValue,
@@ -167,9 +295,9 @@ export default function ThoughtMap() {
     <div className="card">
       <div className="card-box">
         <div className="input-group mb-2">
-          <button className="btn btn-primary" type="button">Prev</button>
-          <span className="flex-grow-1 d-flex align-items-center justify-content-center">{yearMonth()}</span>
-          <button className="btn btn-primary" type="button">Next</button>
+          <button className="btn btn-primary" type="button" onClick={() => decrementSelectedYearMonth()}>Prev</button>
+          <span className="flex-grow-1 d-flex align-items-center justify-content-center">{selectedYearMonth}</span>
+          <button className="btn btn-primary" type="button" onClick={() => incrementSelectedYearMonth()}>Next</button>
         </div>
       </div>
     </div>
@@ -242,6 +370,15 @@ export default function ThoughtMap() {
       </tbody>
     </Table>
 
+    {(monthMoodsList) && (<div className="card"><div className="card-box">
+      <p>Mood(s): </p>
+      <div className="d-flex flex-row justify-content-start align-items-start flex-wrap mb-1">
+        {monthMoodsList?.map((m,index) => {
+          return <h6><span className={getMoodBadgeColorClass(m)} onClick={()=>handleMonthMoodOnClick(m)}>{m}</span></h6>
+        })}
+      </div>
+    </div></div>)}
+
     {(loading) && (
       <div className="d-flex justify-content-center col-12 flex-grow-1">
         <div className="spinner-grow text-secondary">
@@ -262,7 +399,7 @@ export default function ThoughtMap() {
         {
           thoughtRecordObjList.map((tro, index) => {
             if (index > 0 && tro.date !== thoughtRecordObjList[index - 1].date) {
-              return <><hr className="hr hrc" /><ThoughtMapThoughtRecordItem thoughtRecordObj={tro} /></>
+              return <ThoughtMapThoughtRecordItem thoughtRecordObj={tro} />
             } else {
               return <ThoughtMapThoughtRecordItem thoughtRecordObj={tro} />
             }

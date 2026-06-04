@@ -10,6 +10,36 @@ export function compareByIdDesc(a, b) {
     return 0;
 }
 
+export function incrementYearMonth(yearMonth){
+    {/* yyyy-mm-dd 2026-06 -> 2026-07 */ }
+    const ym = yearMonth.split("-")
+
+    if(ym[1] == 12){
+        return `${parseInt(ym[0],10)+1}-01`
+    } else {
+        const mm = String(parseInt(ym[1],10)+1).padStart(2,'0');
+        return `${ym[0]}-${mm}`
+    }
+}
+export function decrementYearMonth(yearMonth){
+    {/* yyyy-mm-dd 2026-06 -> 2026-05 */ }
+
+    const ym = yearMonth.split("-")   
+    if(ym[1] == 1){
+        return `${parseInt(ym[0],10)-1}-12`
+    } else {
+        const mm = String(parseInt(ym[1],10)-1).padStart(2,'0');
+        return `${ym[0]}-${mm}`
+    }
+}
+
+export function yearMonthPlusDay(yearMonth, day){
+    {/* yyyy-mm-dd */ }
+    const dd = String(day).padStart(2,'0');
+    const formattedDate = `${yearMonth}-${dd}`;
+    return formattedDate;
+}
+
 export function yearMonthDay(day){
     {/* yyyy-mm-dd */ }
     const today = new Date();

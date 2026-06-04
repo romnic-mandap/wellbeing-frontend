@@ -29,22 +29,62 @@ import { format24h, format24hHour } from '../util/helperfunctions'
 */
 export default function ThoughtRecordItem({ thoughtRecordObj }) {
 
+  const moodHashMap = new Map()
+  moodHashMap.set("AFRAID", -1)
+  moodHashMap.set("ANGRY", -3)
+  moodHashMap.set("ANXIOUS", -1)
+  moodHashMap.set("ASHAMED", -3)
+  moodHashMap.set("CHEERFUL", 5)
+  moodHashMap.set("CONTENT", 3)
+  moodHashMap.set("DEPRESSED", -3)
+  moodHashMap.set("DISAPPOINTED", -3)
+  moodHashMap.set("DISGUSTED", -3)
+  moodHashMap.set("GRATEFUL", 3)
+  moodHashMap.set("EAGER", 1)
+  moodHashMap.set("EMBARRASSED", -1)
+  moodHashMap.set("ENRAGED", -5)
+  moodHashMap.set("EXCITED", 5)
+  moodHashMap.set("FRIGHTENED", -3)
+  moodHashMap.set("FRUSTRATED", -3)
+  moodHashMap.set("GRIEF", -5)
+  moodHashMap.set("GUILTY", -3)
+  moodHashMap.set("HAPPY", 3)
+  moodHashMap.set("HUMILIATED", -5)
+  moodHashMap.set("HURT", -1)
+  moodHashMap.set("INSECURE", -1)
+  moodHashMap.set("IRRITATED", -1)
+  moodHashMap.set("LOVING", 5)
+  moodHashMap.set("MAD", -3)
+  moodHashMap.set("NERVOUS", -1)
+  moodHashMap.set("PANIC", -5)
+  moodHashMap.set("PROUD", 3)
+  moodHashMap.set("SAD", -1)
+  moodHashMap.set("SCARED", -3)
+
+  const getColorClass = (mood) => {
+    switch (true) {
+      case moodHashMap.get(mood) > 0:
+        return "badge rounded-pill bg-primary me-1"
+      case moodHashMap.get(mood) < 0:
+        return "badge rounded-pill bg-secondary me-1"
+    }
+  }
 
   return (<>
     <div className='card'>
       <div className='card-header'></div>
       <div className='card-body'>
         <p>{dayOfWeek(thoughtRecordObj.date)}, {thoughtRecordObj.date} @ {format24h(thoughtRecordObj.time)}</p>
-          
+
         <p>situation: {thoughtRecordObj.situation}</p>
 
         {(thoughtRecordObj.moods) ? (<>
           <p>mood(s): </p>
-          <ul className="list-group list-group-flush">
+          <div className="d-flex flex-row justify-content-start align-items-start flex-wrap mb-1">
             {thoughtRecordObj.moods?.map(m => {
-              return <li className="list-group-item">{m.moodType} - {m.level} </li>
+              return <h5><span className={getColorClass(m.moodType)}>{m.moodType} - {m.level} </span></h5>
             })}
-          </ul>
+          </div>
         </>) : null}
 
         {(thoughtRecordObj.thoughts) ? (<>
@@ -55,9 +95,51 @@ export default function ThoughtRecordItem({ thoughtRecordObj }) {
             })}
           </ul>
         </>) : null}
-        
+
       </div>
       <div className='card-footer'></div>
     </div>
   </>)
 }
+/*
+{(thoughtRecordObj.moods) ? (<>
+          <p>mood(s): </p>
+          <ul className="list-group list-group-flush">
+            {thoughtRecordObj.moods?.map(m => {
+              return <li className="list-group-item">{m.moodType} - {m.level} </li>
+            })}
+          </ul>
+        </>) : null}
+
+
+AFRAID	-1
+ANGRY	-3
+ANXIOUS	-1
+ASHAMED	-3
+CHEERFUL	5
+CONTENT	3
+DEPRESSED	-3
+DISAPPOINTED	-3
+DISGUSTED	-3
+GRATEFUL	3
+EAGER	1
+EMBARRASSED	-1
+ENRAGED	-5
+EXCITED	5
+FRIGHTENED	-3
+FRUSTRATED	-3
+GRIEF	-5
+GUILTY	-3
+HAPPY	3
+HUMILIATED	-5
+HURT	-1
+INSECURE	-1
+IRRITATED	-1
+LOVING	5
+MAD	-3
+NERVOUS	-1
+PANIC	-5
+PROUD	3
+SAD	-1
+SCARED	-3
+*/

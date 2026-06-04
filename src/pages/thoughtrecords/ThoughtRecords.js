@@ -382,7 +382,7 @@ export default function ThoughtRecords() {
           {
             thoughtRecordObjList.map((tro, index) => {
               if (index > 0 && tro.date !== thoughtRecordObjList[index - 1].date) {
-                return <><hr className="hr hrc" /><ThoughtRecordItem thoughtRecordObj={tro} /></>
+                return <ThoughtRecordItem thoughtRecordObj={tro} />
               } else {
                 return <ThoughtRecordItem thoughtRecordObj={tro} />
               }
