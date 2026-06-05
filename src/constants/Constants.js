@@ -15,7 +15,7 @@ const dev = {
   MEALS_PAGE_SIZE: 20,
   AFTERMEALNOTES_PAGE_SIZE: 20,
   THOUGHTRECORDS_PAGE_SIZE: 12,
-  VERSION: "1.1.2"
+  VERSION: "1.1.3"
 }
 
 // .env
@@ -26,7 +26,7 @@ const prod = {
   MEALS_PAGE_SIZE: process.env.REACT_APP_MEALS_PAGE_SIZE,
   AFTERMEALNOTES_PAGE_SIZE: process.env.REACT_APP_AFTERMEALNOTES_PAGE_SIZE,
   THOUGHTRECORDS_PAGE_SIZE: process.env.REACT_APP_THOUGHTRECORDS_PAGE_SIZE,
-  VERSION: "1.1.2"
+  VERSION: "1.1.3"
 }
 
 export const config = process.env.REACT_APP_NODE_ENV === 'development' ? dev : prod
