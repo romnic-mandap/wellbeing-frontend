@@ -13,6 +13,7 @@ export default function PrivateSidebar({ active = "meals" }) {
         <ul className="list-group">
           <li className={classNames("list-group-item", { "list-group-item-primary": active == "moodmap" })} onClick={() => { navigate("/mood-map") }}>Mood map</li>
           <li className={classNames("list-group-item", { "list-group-item-primary": active == "thoughtrecords" })} onClick={() => { navigate("/thought-records") }}>Thought records</li>
+          <li className={classNames("list-group-item", { "list-group-item-primary": active == "moods" })} onClick={() => { navigate("/moods") }}>Moods</li>
         </ul>
       </Card>
       <Card>

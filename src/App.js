@@ -15,6 +15,9 @@ import FoodItems from './pages/fooditems/FoodItems'
 import FoodTableItems from './pages/foodtableitems/FoodTableItems'
 import ToDo from './pages/todo/ToDo'
 import FoodItemAdd from './pages/FoodItemAdd'
+import Admin from './pages/admin/Admin'
+import Profile from './pages/profile/Profile'
+import Moods from './pages/moods/Moods'
 
 export default function App() {
   return (
@@ -33,6 +36,7 @@ export default function App() {
       <Route path="/thought-records/add" element={<ThoughtRecordItemAdd />} />
       <Route path="/thought-records/:id/edit" element={<ThoughtRecordItemEdit />} />
       <Route path="/mood-map" element={<ThoughtMap />} />
+      <Route path="/moods" element={<Moods />} />
 
       <Route path="/food-items" element={<FoodItems />} />
       <Route path="/food-items/add" element={<FoodItemAdd />} />
@@ -40,6 +44,10 @@ export default function App() {
       <Route path="/food-table-items" element={<FoodTableItems />} />
 
       <Route path="/to-dos" element={<ToDo />} />
+
+      <Route path="/admin" element={<Admin />} />
+
+      <Route path="/profile" element={<Profile />} />
     </Routes>
   )
 }
