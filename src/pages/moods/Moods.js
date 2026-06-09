@@ -14,6 +14,28 @@ import toast, { Toaster } from 'react-hot-toast'
 
 export default function Moods() {
 
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+  const [jwt, setJwt] = useState()
+  const [errors, setErrors] = useState()
+  const [decodedJwtSub, setDecodedJwtSub] = useState()
+  useEffect(() => {
+    const jwt = JSON.parse(localStorage.getItem(config.WELLBEINGv1_JWT))
+    if (jwt) {
+      let decodedJwt = jwt_decode(jwt)
+      let currentDate = new Date()
+      if (decodedJwt.exp * 1000 < currentDate.getTime()) {
+        localStorage.setItem(config.WELLBEINGv1_JWT, null)
+        navigate("/signin")
+      } else {
+        setJwt(jwt)
+        setDecodedJwtSub(decodedJwt.sub)
+      }
+    } else {
+      navigate("/signin")
+    }
+  }, [])
+
   const moodsUI = (<>
     <p className="fs-3">Moods</p>
     <p>Under construction...</p>

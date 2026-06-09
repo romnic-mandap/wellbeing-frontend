@@ -13,10 +13,86 @@ import jwt_decode from "jwt-decode"
 import toast, { Toaster } from 'react-hot-toast'
 
 export default function Admin() {
+  const navigate = useNavigate()
+
+  const [errors, setErrors] = useState()
+  const [generatedPassword, setGeneratedPassword] = useState()
+  const [loading, setLoading] = useState(false)
+  const [jwt, setJwt] = useState()
+  const [decodedJwtSub, setDecodedJwtSub] = useState()
+  useEffect(() => {
+    const jwt = JSON.parse(localStorage.getItem(config.WELLBEINGv1_JWT))
+    if (jwt) {
+      let decodedJwt = jwt_decode(jwt)
+      let currentDate = new Date()
+      if (decodedJwt.exp * 1000 < currentDate.getTime()) {
+        localStorage.setItem(config.WELLBEINGv1_JWT, null)
+        navigate("/signin")
+      } else {
+        setJwt(jwt)
+        setDecodedJwtSub(decodedJwt.sub)
+      }
+    } else {
+      navigate("/signin")
+    }
+  }, [])
+
+  const usernameElement = useRef()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setErrors(null)
+
+    const username = usernameElement.current.value
+
+    fetch(config.BASE_URL + "/user/admin/reset-user-password", {
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer " + jwt
+      },
+      method: "PUT",
+      body: JSON.stringify({
+        "username": username
+      })
+    }
+    ).then(res => {
+      if (res.status === 200) {
+        return res.json()
+      }
+      return res.json().then(data => {
+        throw data
+      })
+    }).then(data => {
+      usernameElement.current.value = ""
+      setGeneratedPassword(username+" "+data.generatedPassword)
+      toast.success("password reset")
+      setErrors(null)
+    }).catch(err => {
+      setErrors(err)
+    })
+  }
 
   const adminUI = (<>
     <p className="fs-3">Admin</p>
-    <p>Under construction...</p>
+    <hr />
+    <p className="fs-5">Reset User Password</p>
+    <form onSubmit={handleSubmit}>
+      <div className="mb-3">
+        <label for="inputUsername" className="form-label">Username:</label>
+        <input type="password" className="form-control" id="inputUsername" ref={usernameElement} />
+      </div>
+      <button type="submit" className="btn btn-primary mb-3">Submit</button>
+      {(generatedPassword) && (
+        <div className="alert alert-success">
+          {generatedPassword}
+        </div>
+      )}
+      {(errors) && (
+        <div className="alert alert-danger">
+          {errors['error(s)']?.map(e => { return <p>{e}</p> })}
+        </div>
+      )}
+    </form>
   </>)
   return (<>
     <PrivateNavbar active="" />
