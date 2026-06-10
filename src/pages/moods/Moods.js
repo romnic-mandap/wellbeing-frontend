@@ -48,33 +48,41 @@ export default function Moods() {
   const handleAnger = () => {
     navigate("/moods/anger")
   }
-  const handleGuilt = () => {
-    navigate("/moods/guilt")
+  const handleGuiltShame = () => {
+    navigate("/moods/guilt-shame")
   }
-  const handleShame = () => {
-    navigate("/moods/shame")
-  }
+
 
   const moodsUI = (<>
     <p className="fs-3">Moods</p>
 
-    <div className="d-flex flex-wrap">
-      <div className="flex-grow-1 col-md-6">
-        <div className="card">
-          <div className="card-body">
-            <h5 class="card-title">Depression</h5>
-            <p class="card-text">To track the symptoms of depression you are experiencing, rate each item listed in the inventory. Fill this out periodically, to assess how your depression is changing and which skills are most worthwhile.</p>
-            <p class="card-text">A general pattern of decreasing scores overtime is a sign that the changes you are making are contributing to your improvement.</p>
-            <button class="btn btn-primary" onClick={handleDepressionInventory}>Take inventory</button>
+    <div className="row">
+      <div className="d-flex flex-wrap">
+        <div className="flex-grow-1 col-md-6">
+          <div className="card">
+            <div className="card-body">
+              <h5 class="card-title">Depression</h5>
+              <p class="card-text">To track the symptoms of depression you are experiencing, rate each item listed in the inventory. Fill this out periodically, to assess how your depression is changing and which skills are most worthwhile.</p>
+              <p class="card-text">A general pattern of decreasing scores overtime is a sign that the changes you are making are contributing to your improvement.</p>
+            </div>
+            <div className="card-footer">
+              <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" onClick={handleDepressionInventory}>Take inventory</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="flex-grow-1 col-md-6">
-        <div className="card">
-          <div className="card-body">
-            <h5 class="card-title">Anxiety</h5>
-            <p class="card-text">To specify what symptoms you experience when you are anxious, rate the symptoms listed in the inventory. Take the eventory once a week while you are learning methods to manage your anxiety, so you can determine which skills are most effective and to track your progress.</p>
-            <button class="btn btn-primary" onClick={handleAnxietyInventory}>Take inventory</button>
+        <div className="d-flex flex-grow-1 col-md-6">
+          <div className="card">
+            <div className="card-body">
+              <h5 class="card-title">Anxiety</h5>
+              <p class="card-text">To specify what symptoms you experience when you are anxious, rate the symptoms listed in the inventory. Take the eventory once a week while you are learning methods to manage your anxiety, so you can determine which skills are most effective and to track your progress.</p>
+            </div>
+            <div className="card-footer">
+              <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" onClick={handleAnxietyInventory}>Take inventory</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -117,19 +125,13 @@ export default function Moods() {
     </div>
 
     <hr />
-    <p className="fs-5">Guilt</p>
+    <p className="fs-5">Guilt & Shame</p>
     <p>We feel guilty when we believe that we have done something wrong or not lived up to the standards we have set for ourselves.</p>
     <p>Guilt is often accompanied by thoughts containing the words "should" or "ought".</p>
-    <div className="d-flex justify-content-end">
-      <button class="btn btn-primary" onClick={handleGuilt}>Learn More...</button>
-    </div>
-
-    <hr />
-    <p className="fs-5">Shame</p>
     <p>Shame involves the perception that we have done something wrong, that we have to keep it a secret, and that what we have done means something terrible about us.</p>
     <p>Guilt and shame can be lessened or eliminated by assessing the seriousness of your actions, weighing personal responsibility, making reparations for any harm you caused, breaking the silence surrounding shame, and self-forgiveness.</p>
     <div className="d-flex justify-content-end">
-      <button class="btn btn-primary" onClick={handleShame}>Learn More...</button>
+      <button class="btn btn-primary" onClick={handleGuiltShame}>Learn More...</button>
     </div>
 
   </>)

@@ -23,6 +23,7 @@ import MoodsDepression from './pages/moods_depression/MoodsDepression'
 import MoodsAnxiety from './pages/moods_anxiety/MoodsAnxiety'
 import MoodsGuilt from './pages/moods_guilt/MoodsGuilt'
 import MoodsShame from './pages/moods_shame/MoodsShame'
+import MoodsGuiltShame from './pages/moods_guilt_shame/MoodsGuiltShame'
 import MoodsDepressionInventory from './pages/moods_depression_inventory/MoodsDepressionInventory'
 import MoodsAnxietyInventory from './pages/moods_anxiety_inventory/MoodsAnxietyInventory'
 
@@ -50,6 +51,7 @@ export default function App() {
       <Route path="/moods/anxiety" element={<MoodsAnxiety />} />
       <Route path="/moods/guilt" element={<MoodsGuilt />} />
       <Route path="/moods/shame" element={<MoodsShame />} />
+      <Route path="/moods/guilt-shame" element={<MoodsGuiltShame />} />
       <Route path="/moods/depression-inventory" element={<MoodsDepressionInventory />} />
       <Route path="/moods/anxiety-inventory" element={<MoodsAnxietyInventory />} />
 
