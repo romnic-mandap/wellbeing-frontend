@@ -18,6 +18,13 @@ import FoodItemAdd from './pages/FoodItemAdd'
 import Admin from './pages/admin/Admin'
 import Profile from './pages/profile/Profile'
 import Moods from './pages/moods/Moods'
+import MoodsAnger from './pages/moods_anger/MoodsAnger'
+import MoodsDepression from './pages/moods_depression/MoodsDepression'
+import MoodsAnxiety from './pages/moods_anxiety/MoodsAnxiety'
+import MoodsGuilt from './pages/moods_guilt/MoodsGuilt'
+import MoodsShame from './pages/moods_shame/MoodsShame'
+import MoodsDepressionInventory from './pages/moods_depression_inventory/MoodsDepressionInventory'
+import MoodsAnxietyInventory from './pages/moods_anxiety_inventory/MoodsAnxietyInventory'
 
 export default function App() {
   return (
@@ -36,7 +43,15 @@ export default function App() {
       <Route path="/thought-records/add" element={<ThoughtRecordItemAdd />} />
       <Route path="/thought-records/:id/edit" element={<ThoughtRecordItemEdit />} />
       <Route path="/mood-map" element={<ThoughtMap />} />
+
       <Route path="/moods" element={<Moods />} />
+      <Route path="/moods/anger" element={<MoodsAnger />} />
+      <Route path="/moods/depression" element={<MoodsDepression />} />
+      <Route path="/moods/anxiety" element={<MoodsAnxiety />} />
+      <Route path="/moods/guilt" element={<MoodsGuilt />} />
+      <Route path="/moods/shame" element={<MoodsShame />} />
+      <Route path="/moods/depression-inventory" element={<MoodsDepressionInventory />} />
+      <Route path="/moods/anxiety-inventory" element={<MoodsAnxietyInventory />} />
 
       <Route path="/food-items" element={<FoodItems />} />
       <Route path="/food-items/add" element={<FoodItemAdd />} />

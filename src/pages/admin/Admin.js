@@ -79,7 +79,7 @@ export default function Admin() {
     <form onSubmit={handleSubmit}>
       <div className="mb-3">
         <label for="inputUsername" className="form-label">Username:</label>
-        <input type="password" className="form-control" id="inputUsername" ref={usernameElement} />
+        <input type="text" className="form-control" id="inputUsername" ref={usernameElement} />
       </div>
       <button type="submit" className="btn btn-primary mb-3">Submit</button>
       {(generatedPassword) && (
