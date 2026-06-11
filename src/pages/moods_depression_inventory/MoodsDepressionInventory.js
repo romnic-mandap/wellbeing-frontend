@@ -223,7 +223,7 @@ export default function MoodsDepressionInventory() {
 
     <div>
       <hr />
-      <p>7. seeing myself as worthless</p>
+      <p>7. Seeing myself as worthless</p>
       <div className="d-flex justify-content-end">
         <div className="btn-group">
           <input type="radio" className="btn-check" name="q7" id="q7a" value="0" checked={q7 === "0"} onChange={(e) => setQ7(e.target.value)} />
@@ -243,7 +243,7 @@ export default function MoodsDepressionInventory() {
 
     <div>
       <hr />
-      <p>8. Trouble conecentrating</p>
+      <p>8. Trouble concentrating</p>
       <div className="d-flex justify-content-end">
         <div className="btn-group">
           <input type="radio" className="btn-check" name="q8" id="q8a" value="0" checked={q8 === "0"} onChange={(e) => setQ8(e.target.value)} />

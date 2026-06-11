@@ -27,6 +27,11 @@ export default function PrivateSidebar({ active = "meals" }) {
       </Card>
       <Card>
         <ul className="list-group">
+          <li className={classNames("list-group-item", { "list-group-item-primary": active == "calendar" })} onClick={() => { navigate("/calendar") }}>Calendar</li>
+        </ul>
+      </Card>
+      <Card>
+        <ul className="list-group">
           <li className={classNames("list-group-item", { "list-group-item-primary": active == "todos" })} onClick={() => { navigate("/to-dos") }}>To-do list</li>
           <li className="list-group-item disabled">Coming soon...</li>
         </ul>

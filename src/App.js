@@ -26,6 +26,7 @@ import MoodsShame from './pages/moods_shame/MoodsShame'
 import MoodsGuiltShame from './pages/moods_guilt_shame/MoodsGuiltShame'
 import MoodsDepressionInventory from './pages/moods_depression_inventory/MoodsDepressionInventory'
 import MoodsAnxietyInventory from './pages/moods_anxiety_inventory/MoodsAnxietyInventory'
+import Calendar from './pages/calendar/Calendar'
 
 export default function App() {
   return (
@@ -36,7 +37,7 @@ export default function App() {
       <Route path="/" element={<Home />} />
       <Route path="/meals" element={<Meals />} />
       <Route path="/meals/add" element={<MealItemAdd />} />
-      <Route path="/meals/:id/edit" element={<MealItemEdit />}/>
+      <Route path="/meals/:id/edit" element={<MealItemEdit />} />
 
       <Route path="/after-meal-notes" element={<AfterMealNotes />} />
 
@@ -59,6 +60,8 @@ export default function App() {
       <Route path="/food-items/add" element={<FoodItemAdd />} />
 
       <Route path="/food-table-items" element={<FoodTableItems />} />
+
+      <Route path="/calendar" element={<Calendar />} />
 
       <Route path="/to-dos" element={<ToDo />} />
 
