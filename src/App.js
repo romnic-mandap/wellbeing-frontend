@@ -47,12 +47,6 @@ export default function App() {
       <Route path="/mood-map" element={<ThoughtMap />} />
 
       <Route path="/moods" element={<Moods />} />
-      <Route path="/moods/anger" element={<MoodsAnger />} />
-      <Route path="/moods/depression" element={<MoodsDepression />} />
-      <Route path="/moods/anxiety" element={<MoodsAnxiety />} />
-      <Route path="/moods/guilt" element={<MoodsGuilt />} />
-      <Route path="/moods/shame" element={<MoodsShame />} />
-      <Route path="/moods/guilt-shame" element={<MoodsGuiltShame />} />
       <Route path="/moods/depression-inventory" element={<MoodsDepressionInventory />} />
       <Route path="/moods/anxiety-inventory" element={<MoodsAnxietyInventory />} />
 
