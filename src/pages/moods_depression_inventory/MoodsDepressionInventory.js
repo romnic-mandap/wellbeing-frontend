@@ -487,7 +487,7 @@ export default function MoodsDepressionInventory() {
       <Modal.Header closeButton>
         <Modal.Title>Depression Inventory</Modal.Title>
       </Modal.Header>
-      <Modal.Body>You scored {score}/57.</Modal.Body>
+      <Modal.Body>You scored {score}/57. {parseFloat(score/57*100).toFixed(1)+"%"}</Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={handleClose}>
           Close
